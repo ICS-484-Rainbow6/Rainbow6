@@ -14,6 +14,8 @@ app = dash.Dash(__name__)
 # Import and clean data (importing csv into pandas)
 
 # test purpose, 1M rows only
+# name all the 1G file like "s1.csv", "s2.csv", etc
+
 for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
     df = pd.DataFrame(columns = toprow.columns)
     break

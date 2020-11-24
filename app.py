@@ -54,7 +54,8 @@ app.layout = html.Div([
     
 
     html.Div(id='output_container', children=[]),
-    dcc.Graph(id='windelta_figure', figure={})
+    dcc.Graph(id='windelta_figure', figure={}),
+    dcc.Graph(id='presence_figure', figure={})
 ])
 
 
@@ -62,7 +63,8 @@ app.layout = html.Div([
 # Connect the Plotly graphs with Dash Components
 @app.callback(
     [Output(component_id='output_container', component_property='children'),
-     Output(component_id='windelta_figure', component_property='figure')],
+     Output(component_id='windelta_figure', component_property='figure'),
+     Output(component_id='presence_figure', component_property='figure')],
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
@@ -78,12 +80,20 @@ def update_graph(platform, role):
     
     rdf = dff.groupby(["operator"]).mean()["haswon"].apply(lambda x:x).reset_index()
     rdf.rename(columns={"haswon": "WinDelta"}, inplace=True)
-    rdf["WinDelta"] = rdf["WinDelta"] - 0.5
-    fig = px.bar(rdf, x="operator", y="WinDelta")
+    rdf["WinDelta"] = (rdf["WinDelta"] - 0.5) * 100
+    fig1 = px.bar(rdf, x="operator", y="WinDelta")
+    
+    
+    rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
+    rdf2.rename(columns={"platform": "Presence"}, inplace=True)
+    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 100
+    
+    
+    fig2 = px.bar(rdf2, x="operator", y="Presence")
     
     
     
-    return container, fig
+    return container, fig1, fig2
 
 
 

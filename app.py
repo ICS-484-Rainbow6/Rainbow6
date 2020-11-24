@@ -88,8 +88,11 @@ def update_graph(platform, role):
     rdf2.rename(columns={"platform": "Presence"}, inplace=True)
     rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 100
     
+    rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
+    print(rdf3.head())
     
-    fig2 = px.bar(rdf2, x="operator", y="Presence")
+    
+    fig2 = px.scatter(rdf3, x = "Presence", y = "WinDelta", color = "operator")
     
     
     

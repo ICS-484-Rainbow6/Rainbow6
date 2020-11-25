@@ -1,11 +1,10 @@
 
 import pandas as pd
-import plotly.express as px  # (version 4.7.0)
-import plotly.graph_objects as go
+
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from PIL import Image
-from plotly.tools import mpl_to_plotly
+
 from io import BytesIO
 import base64
 
@@ -15,15 +14,16 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
+from app import df
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
 # test purpose, 1M rows only
 # name all the 1G file like "s1.csv", "s2.csv", etc
 
-for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
-    df = pd.DataFrame(columns = toprow.columns)
-    break
+# for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
+#     fakedf = pd.DataFrame(columns = toprow.columns)
+#     break
 
 # print(toprow.iloc[0])
 
@@ -84,7 +84,7 @@ layout = html.Div([
 
 def update_graph(platform, role):
 
-    dff = toprow.copy()
+    dff = df.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
     if role != "None":

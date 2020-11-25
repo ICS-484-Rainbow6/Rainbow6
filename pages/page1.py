@@ -1,4 +1,4 @@
-  
+
 import pandas as pd
 import plotly.express as px  # (version 4.7.0)
 import plotly.graph_objects as go
@@ -25,7 +25,7 @@ for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
     df = pd.DataFrame(columns = toprow.columns)
     break
 
-print(toprow.iloc[0])
+# print(toprow.iloc[0])
 
 
 # ------------------------------------------------------------------------------
@@ -33,35 +33,42 @@ print(toprow.iloc[0])
 layout = html.Div([
 
     html.H1("Win Delta Per Operator VS Presence", style={'text-align': 'center'}),
-    
-    html.H3("Platform:"),   
-    dcc.Dropdown(id="platform_select",
-                 options=[
-                     {"label": "All", "value": "None"},
-                     {"label": "PC", "value": "PC"},
-                     {"label": "PS4", "value": "PS4"},
-                     {"label": "XONE", "value": "XONE"}],
-                 multi=False,
-                 value="None",
-                 style={'width': "40%"}
-                 ),
-    
-    html.H3("Role:"),
-    dcc.Dropdown(id="role_select",
-                 options=[
-                     {"label": "Both", "value": "None"},
-                     {"label": "Attacker", "value": "Attacker"},
-                     {"label": "Defender", "value": "Defender"}],
-                 multi=False,
-                 value="None",
-                 style={'width': "40%"}
-                 ),
-    
-    dcc.Graph(id='windelta_figure', figure={}),
+
+    html.Div([
+        html.Div([
+            html.H3("Platform:", style={'width': '49%', 'display': 'inline-block'}),
+            dcc.Dropdown(id="platform_select",
+                         options=[
+                             {"label": "All", "value": "None"},
+                             {"label": "PC", "value": "PC"},
+                             {"label": "PS4", "value": "PS4"},
+                             {"label": "XONE", "value": "XONE"}],
+                         multi=False,
+                         value="None",
+                         style={'width': '49%', 'display': 'inline-block'}
+                         )], style={'width': '49%', 'display': 'inline-block'}),
+
+        html.Div([
+            html.H3("Role:", style={'width': '49%', 'display': 'inline-block'}),
+            dcc.Dropdown(id="role_select",
+                         options=[
+                             {"label": "Both", "value": "None"},
+                             {"label": "Attacker", "value": "Attacker"},
+                             {"label": "Defender", "value": "Defender"}],
+                         multi=False,
+                         value="None",
+                         style={'width': '49%', 'display': 'inline-block'}
+                         )], style={'width': '49%', 'display': 'inline-block'})
+    ]),
+
+
+
+
+
     html.Div([html.Img(id = 'wp_plot', src = '', style={
-                'height': '50%',
-                'width': '50%'
-            })],
+        'height': '50%',
+        'width': '50%'
+    })],
              id='plot_div', style={'textAlign': 'center'})
 ])
 
@@ -69,34 +76,34 @@ layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    [Output(component_id='windelta_figure', component_property='figure'),
-     Output(component_id='wp_plot', component_property='src')],
+
+    Output(component_id='wp_plot', component_property='src'),
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
 
 def update_graph(platform, role):
-   
+
     dff = toprow.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
     if role != "None":
         dff = dff[dff["role"] == role]
-    
+
+    average_winrate = dff["haswon"].sum() / dff.shape[0]
     rdf = dff.groupby(["operator"]).mean()["haswon"].apply(lambda x:x).reset_index()
     rdf.rename(columns={"haswon": "WinDelta"}, inplace=True)
-    rdf["WinDelta"] = (rdf["WinDelta"] - 0.5) * 100
-    fig1 = px.bar(rdf, x="operator", y="WinDelta")
-    
-    
+    rdf["WinDelta"] = (rdf["WinDelta"] - average_winrate) * 100
+
+
     rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
     rdf2.rename(columns={"platform": "Presence"}, inplace=True)
     rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 100
-    
+
     rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
-      
+
     paths = rdf3["operator"]
-    
+
     fig= plt.figure()
     fig, ax = plt.subplots()
     x = rdf3["Presence"]
@@ -111,18 +118,18 @@ def update_graph(platform, role):
     for x0, y0, path in zip(x, y,paths):
         ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)
-    out_url = fig_to_uri(fig)
+    out_url = fig_to_url(fig)
 
-    
-    
-    return fig1, out_url
+
+
+    return out_url
 
 
 
 # ------------------------------------------------------------------------------
 # other functions
 
-def fig_to_uri(in_fig, close_all=True):
+def fig_to_url(in_fig, close_all=True):
     # type: (plt.Figure) -> str
     """
     Save a figure as a URI

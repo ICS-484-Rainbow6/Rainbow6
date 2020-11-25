@@ -2,6 +2,12 @@
 import pandas as pd
 import plotly.express as px  # (version 4.7.0)
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from PIL import Image
+from plotly.tools import mpl_to_plotly
+from io import BytesIO
+import base64
 
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
@@ -55,7 +61,9 @@ app.layout = html.Div([
 
     html.Div(id='output_container', children=[]),
     dcc.Graph(id='windelta_figure', figure={}),
-    dcc.Graph(id='presence_figure', figure={})
+    dcc.Graph(id='presence_figure', figure={}),
+    html.Div([html.Img(id = 'wp_plot', src = '')],
+             id='plot_div')
 ])
 
 
@@ -64,7 +72,8 @@ app.layout = html.Div([
 @app.callback(
     [Output(component_id='output_container', component_property='children'),
      Output(component_id='windelta_figure', component_property='figure'),
-     Output(component_id='presence_figure', component_property='figure')],
+     Output(component_id='presence_figure', component_property='figure'),
+     Output(component_id='wp_plot', component_property='src')],
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
@@ -94,13 +103,43 @@ def update_graph(platform, role):
     
     fig2 = px.scatter(rdf3, x = "Presence", y = "WinDelta", color = "operator")
     
+    paths = rdf3["operator"]
+    
+    fig= plt.figure()
+    fig, ax = plt.subplots()
+    x = rdf3["Presence"]
+    y = rdf3["WinDelta"]
+    ax.scatter(x, y)
+    ax.grid(True)
+    for x0, y0, path in zip(x, y,paths):
+        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((40,40))), (x0, y0), frameon=False)
+        ax.add_artist(ab)
+    out_url = fig_to_uri(fig)
+
     
     
-    return container, fig1, fig2
+    return container, fig1, fig2, out_url
 
 
 
+# ------------------------------------------------------------------------------
+# other functions
 
+def fig_to_uri(in_fig, close_all=True, **save_args):
+    # type: (plt.Figure) -> str
+    """
+    Save a figure as a URI
+    :param in_fig:
+    :return:
+    """
+    out_img = BytesIO()
+    in_fig.savefig(out_img, format='png', **save_args)
+    if close_all:
+        in_fig.clf()
+        plt.close('all')
+    out_img.seek(0)  # rewind file
+    encoded = base64.b64encode(out_img.read()).decode("ascii").replace("\n", "")
+    return "data:image/png;base64,{}".format(encoded)
 
 
 

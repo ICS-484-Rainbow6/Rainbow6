@@ -62,16 +62,21 @@ layout = html.Div([
 
 def update_graph(platform, role):
 
+    i1 = 1.0
     dff = df.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
     if role != "None":
+        temp1 = dff.shape[0]
         dff = dff[dff["role"] == role]
+        temp2 = dff.shape[0]
+        i1 = temp1 / temp2
 
     rdf = dff.groupby(["skillrank", "operator"]).count()["platform"].apply(lambda x:x).reset_index()
     rdf.rename(columns={"platform": "Count"}, inplace=True)
     rdf2 = dff.groupby(["skillrank"]).count()["platform"].apply(lambda x:x).reset_index()
     rdf2.rename(columns={"platform": "Count2"}, inplace=True)
+    rdf2["Count2"] = rdf2["Count2"] * i1
     rdf2 = rdf2.reindex([6,1,0,5,3,4,2]).reset_index()
     rdf2 = rdf2[["skillrank", "Count2"]]
     rdf3 = pd.merge(rdf2, rdf, on='skillrank', how='outer')

@@ -84,11 +84,15 @@ layout = html.Div([
 
 def update_graph(platform, role):
 
+    i1 = 1.0
     dff = df.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
     if role != "None":
+        temp1 = dff.shape[0]
         dff = dff[dff["role"] == role]
+        temp2 = dff.shape[0]
+        i1 = temp2 / temp1
 
     average_winrate = dff["haswon"].sum() / dff.shape[0]
     rdf = dff.groupby(["operator"]).mean()["haswon"].apply(lambda x:x).reset_index()
@@ -98,7 +102,7 @@ def update_graph(platform, role):
 
     rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
     rdf2.rename(columns={"platform": "Presence"}, inplace=True)
-    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 1000
+    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 1000 * i1
 
     rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
 
@@ -113,7 +117,7 @@ def update_graph(platform, role):
     ax.set_ylabel('WinDelta (in %)')
     fig.set_size_inches(10, 10, forward=True)
     plt.axhline(0, color='red')
-    plt.axvline(3, color='red')
+    plt.axvline(30, color='red')
     for x0, y0, path in zip(x, y,paths):
         ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)

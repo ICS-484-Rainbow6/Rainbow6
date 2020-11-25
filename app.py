@@ -58,10 +58,7 @@ app.layout = html.Div([
                  style={'width': "40%"}
                  ),
     
-
-    html.Div(id='output_container', children=[]),
     dcc.Graph(id='windelta_figure', figure={}),
-    dcc.Graph(id='presence_figure', figure={}),
     html.Div([html.Img(id = 'wp_plot', src = '')],
              id='plot_div')
 ])
@@ -70,17 +67,14 @@ app.layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    [Output(component_id='output_container', component_property='children'),
-     Output(component_id='windelta_figure', component_property='figure'),
-     Output(component_id='presence_figure', component_property='figure'),
+    [Output(component_id='windelta_figure', component_property='figure'),
      Output(component_id='wp_plot', component_property='src')],
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
 
 def update_graph(platform, role):
-    container = "The chose role was: {}".format(role)
-    
+   
     dff = toprow.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
@@ -98,11 +92,7 @@ def update_graph(platform, role):
     rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 100
     
     rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
-    print(rdf3.head())
-    
-    
-    fig2 = px.scatter(rdf3, x = "Presence", y = "WinDelta", color = "operator")
-    
+      
     paths = rdf3["operator"]
     
     fig= plt.figure()
@@ -112,13 +102,13 @@ def update_graph(platform, role):
     ax.scatter(x, y)
     ax.grid(True)
     for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((40,40))), (x0, y0), frameon=False)
+        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((30,30))), (x0, y0), frameon=False)
         ax.add_artist(ab)
     out_url = fig_to_uri(fig)
 
     
     
-    return container, fig1, fig2, out_url
+    return fig1, out_url
 
 
 

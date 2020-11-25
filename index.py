@@ -3,10 +3,11 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from pages import page1, page_test
+from pages import page1, page_test, homepage
 
 
 app.layout = html.Div([
+    html.H3('HomePage'),
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
 ])
@@ -20,7 +21,7 @@ def display_page(pathname):
     elif pathname == '/pages/page_test':
         return page_test.layout
     else:
-        return '404'
+        return 'Welcome homepage'
 
 if __name__ == '__main__':
     app.run_server(debug=True)

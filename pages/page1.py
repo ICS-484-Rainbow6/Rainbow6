@@ -98,13 +98,12 @@ def update_graph(platform, role):
 
     rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
     rdf2.rename(columns={"platform": "Presence"}, inplace=True)
-    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 100
+    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 1000
 
     rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
 
     paths = rdf3["operator"]
 
-    fig= plt.figure()
     fig, ax = plt.subplots()
     x = rdf3["Presence"]
     y = rdf3["WinDelta"]

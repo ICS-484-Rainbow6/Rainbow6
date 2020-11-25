@@ -14,8 +14,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
-app = dash.Dash(__name__)
-
+from app import app
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
@@ -31,7 +30,7 @@ print(toprow.iloc[0])
 
 # ------------------------------------------------------------------------------
 # App layout
-app.layout = html.Div([
+layout = html.Div([
 
     html.H1("Win Delta Per Operator VS Presence", style={'text-align': 'center'}),
     
@@ -59,8 +58,11 @@ app.layout = html.Div([
                  ),
     
     dcc.Graph(id='windelta_figure', figure={}),
-    html.Div([html.Img(id = 'wp_plot', src = '')],
-             id='plot_div')
+    html.Div([html.Img(id = 'wp_plot', src = '', style={
+                'height': '50%',
+                'width': '50%'
+            })],
+             id='plot_div', style={'textAlign': 'center'})
 ])
 
 
@@ -101,8 +103,13 @@ def update_graph(platform, role):
     y = rdf3["WinDelta"]
     ax.scatter(x, y)
     ax.grid(True)
+    ax.set_xlabel('Presence (in %)')
+    ax.set_ylabel('WinDelta (in %)')
+    fig.set_size_inches(10, 10, forward=True)
+    plt.axhline(0, color='red')
+    plt.axvline(3, color='red')
     for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((30,30))), (x0, y0), frameon=False)
+        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)
     out_url = fig_to_uri(fig)
 
@@ -115,7 +122,7 @@ def update_graph(platform, role):
 # ------------------------------------------------------------------------------
 # other functions
 
-def fig_to_uri(in_fig, close_all=True, **save_args):
+def fig_to_uri(in_fig, close_all=True):
     # type: (plt.Figure) -> str
     """
     Save a figure as a URI
@@ -123,7 +130,7 @@ def fig_to_uri(in_fig, close_all=True, **save_args):
     :return:
     """
     out_img = BytesIO()
-    in_fig.savefig(out_img, format='png', **save_args)
+    in_fig.savefig(out_img, format='png')
     if close_all:
         in_fig.clf()
         plt.close('all')
@@ -136,5 +143,3 @@ def fig_to_uri(in_fig, close_all=True, **save_args):
 
 
 # ------------------------------------------------------------------------------
-if __name__ == '__main__':
-    app.run_server(debug=True)

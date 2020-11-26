@@ -7,7 +7,7 @@ from pages import page1, page_test, homepage
 
 
 app.layout = html.Div([
-    html.H3('HomePage'),
+    html.Div([]),
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
 ])

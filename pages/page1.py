@@ -14,7 +14,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from app import df
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
@@ -26,6 +25,10 @@ from app import df
 #     break
 
 # print(toprow.iloc[0])
+
+for df in pd.read_csv("s1.csv", chunksize=4000000):
+    break
+    print(df.shape)
 
 
 # ------------------------------------------------------------------------------

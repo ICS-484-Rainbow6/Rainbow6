@@ -1,12 +1,6 @@
 
 import pandas as pd
-
-import matplotlib.pyplot as plt
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-from PIL import Image
-
-from io import BytesIO
-import base64
+import plotly.express as px
 
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
@@ -14,28 +8,18 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
+
 # ------------------------------------------------------------------------------
-# Import and clean data (importing csv into pandas)
-
-# test purpose, 1M rows only
-# name all the 1G file like "s1.csv", "s2.csv", etc
-
-# for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
-#     fakedf = pd.DataFrame(columns = toprow.columns)
-#     break
-
-# print(toprow.iloc[0])
-
+# Import
 for df in pd.read_csv("s1.csv", chunksize=4000000):
     break
     print(df.shape)
-
 
 # ------------------------------------------------------------------------------
 # App layout
 layout = html.Div([
 
-    html.H1("Win Delta Per Operator VS Presence", style={'text-align': 'center'}),
+    html.H1("Operator Presence by rank", style={'text-align': 'center'}),
 
     html.Div([
         html.Div([
@@ -68,11 +52,7 @@ layout = html.Div([
 
 
 
-    html.Div([html.Img(id = 'wp_plot', src = '', style={
-        'height': '50%',
-        'width': '50%'
-    })],
-             id='plot_div', style={'textAlign': 'center'})
+    dcc.Graph(id='pbr_figure', figure={})
 ])
 
 
@@ -80,7 +60,7 @@ layout = html.Div([
 # Connect the Plotly graphs with Dash Components
 @app.callback(
 
-    Output(component_id='wp_plot', component_property='src'),
+    Output(component_id='pbr_figure', component_property='figure'),
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
@@ -95,64 +75,27 @@ def update_graph(platform, role):
         temp1 = dff.shape[0]
         dff = dff[dff["role"] == role]
         temp2 = dff.shape[0]
-        i1 = temp2 / temp1
+        i1 = temp1 / temp2
 
-    average_winrate = dff["haswon"].sum() / dff.shape[0]
-    rdf = dff.groupby(["operator"]).mean()["haswon"].apply(lambda x:x).reset_index()
-    rdf.rename(columns={"haswon": "WinDelta"}, inplace=True)
-    rdf["WinDelta"] = (rdf["WinDelta"] - average_winrate) * 100
-
-
-    rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
-    rdf2.rename(columns={"platform": "Presence"}, inplace=True)
-    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 1000 * i1
-
-    rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
-
-    paths = rdf3["operator"]
-
-    fig, ax = plt.subplots()
-    x = rdf3["Presence"]
-    y = rdf3["WinDelta"]
-    ax.scatter(x, y)
-    ax.grid(True)
-    ax.set_xlabel('Presence (in %)')
-    ax.set_ylabel('WinDelta (in %)')
-    fig.set_size_inches(10, 10, forward=True)
-    plt.axhline(0, color='red')
-    plt.axvline(30, color='red')
-    for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('png/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
-        ax.add_artist(ab)
-    out_url = fig_to_url(fig)
+    rdf = dff.groupby(["skillrank", "operator"]).count()["platform"].apply(lambda x:x).reset_index()
+    rdf.rename(columns={"platform": "Count"}, inplace=True)
+    rdf2 = dff.groupby(["skillrank"]).count()["platform"].apply(lambda x:x).reset_index()
+    rdf2.rename(columns={"platform": "Count2"}, inplace=True)
+    rdf2["Count2"] = rdf2["Count2"] * i1
+    rdf2 = rdf2.reindex([6,1,0,5,3,4,2]).reset_index()
+    rdf2 = rdf2[["skillrank", "Count2"]]
+    rdf3 = pd.merge(rdf2, rdf, on='skillrank', how='outer')
+    rdf3["Presence"] = rdf3["Count"]/ rdf3["Count2"] * 1000
+    rdf3 = rdf3[rdf3["skillrank"] != "Unranked"]
+    fig = px.line(rdf3, x="skillrank", y="Presence", color="operator")
 
 
-
-    return out_url
+    return fig
 
 
 
 # ------------------------------------------------------------------------------
 # other functions
-
-def fig_to_url(in_fig, close_all=True):
-    # type: (plt.Figure) -> str
-    """
-    Save a figure as a URI
-    :param in_fig:
-    :return:
-    """
-    out_img = BytesIO()
-    in_fig.savefig(out_img, format='png')
-    if close_all:
-        in_fig.clf()
-        plt.close('all')
-    out_img.seek(0)  # rewind file
-    encoded = base64.b64encode(out_img.read()).decode("ascii").replace("\n", "")
-    return "data:image/png;base64,{}".format(encoded)
-
-
-
 
 
 # ------------------------------------------------------------------------------

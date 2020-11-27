@@ -122,7 +122,7 @@ def update_graph(platform, role):
     plt.axhline(0, color='red')
     plt.axvline(30, color='red')
     for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('png\\' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
+        ab = AnnotationBbox(OffsetImage(Image.open('png/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)
     out_url = fig_to_url(fig)
 

@@ -30,24 +30,51 @@ layout = html.Div([
             html.H3("Platform:", style={'width': '49%', 'display': 'inline-block'}),
             dcc.Dropdown(id="platform_select",
                          options=[
-                             {"label": "All", "value": "None"},
+                             {"label": "All", "value": "All"},
                              {"label": "PC", "value": "PC"},
                              {"label": "PS4", "value": "PS4"},
                              {"label": "XONE", "value": "XONE"}],
                          multi=False,
-                         value="None",
+                         value="All",
                          style={'width': '49%', 'display': 'inline-block'}
                          )], style={'width': '49%', 'display': 'inline-block'}),
+
+        html.Div([
+            html.H3("Rank:", style={'width': '49%', 'display': 'inline-block'}),
+            dcc.Dropdown(id="skillrank_select",
+                         options=[
+                             {"label": "All", "value": "All"},
+                             {"label": "Copper & Bronze", "value": "Copper & Bronze"},
+                             {"label": "Silver & Gold", "value": "Silver & Gold"},
+                             {"label": "Platinum+", "value": "Platinum+"}],
+                         multi=False,
+                         value="All",
+                         style={'width': '49%', 'display': 'inline-block'}
+                         )], style={'width': '49%', 'display': 'inline-block'}),
+
+        html.Div([
+            html.H3("Game Mode:", style={'width': '49%', 'display': 'inline-block'}),
+            dcc.Dropdown(id="gamemode_select",
+                         options=[
+                             {"label": "All", "value": "All"},
+                             {"label": "Bomb", "value": "BOMB"},
+                             {"label": "Secure", "value": "SECURE"},
+                             {"label": "Hostage", "value": "HOSTAGE"}],
+                         multi=False,
+                         value="All",
+                         style={'width': '49%', 'display': 'inline-block'}
+                         )], style={'width': '49%', 'display': 'inline-block'}),
+
 
         html.Div([
             html.H3("Role:", style={'width': '49%', 'display': 'inline-block'}),
             dcc.Dropdown(id="role_select",
                          options=[
-                             {"label": "Both", "value": "None"},
+                             {"label": "Both", "value": "All"},
                              {"label": "Attacker", "value": "Attacker"},
                              {"label": "Defender", "value": "Defender"}],
                          multi=False,
-                         value="None",
+                         value="All",
                          style={'width': '49%', 'display': 'inline-block'}
                          )], style={'width': '49%', 'display': 'inline-block'})
     ]),
@@ -56,7 +83,7 @@ layout = html.Div([
 
 
 
-    html.Div([html.Img(id = 'wp_plot', src = '', style={
+    html.Div([html.Img(id='wp_plot', src='', style={
         'height': '50%',
         'width': '50%'
     })],
@@ -70,16 +97,34 @@ layout = html.Div([
 
     Output(component_id='wp_plot', component_property='src'),
     [Input(component_id='platform_select', component_property='value'),
+     Input(component_id='skillrank_select', component_property='value'),
+     Input(component_id='gamemode_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
 
-def update_graph(platform, role):
+def update_graph(platform, skillrank, gamemode, role):
 
+    # Apply filters
     dff = df.copy()
-    if platform != "None":
+    if platform != "All":
         dff = dff[dff["platform"] == platform]
-    if role != "None":
+
+    if skillrank == "Copper & Bronze":
+            dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+    if skillrank == "Silver & Gold":
+        dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
+    if skillrank == "Platinum+":
+        dff = dff[(dff["skillrank"] == "Platinum") | (dff["skillrank"] == "Diamond")]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+    if role != "All":
         dff = dff[dff["role"] == role]
+
+    
+
+
 
     # windelta df
     factor = ["operator"]

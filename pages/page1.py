@@ -14,21 +14,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
+from app import df
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
-
-# test purpose, 1M rows only
-# name all the 1G file like "s1.csv", "s2.csv", etc
-
-# for toprow in pd.read_csv("s1.csv", chunksize = 1000000):
-#     fakedf = pd.DataFrame(columns = toprow.columns)
-#     break
-
-# print(toprow.iloc[0])
-
-for df in pd.read_csv("s1.csv", chunksize=4000000):
-    break
-    print(df.shape)
 
 
 # ------------------------------------------------------------------------------
@@ -87,33 +75,35 @@ layout = html.Div([
 
 def update_graph(platform, role):
 
-    i1 = 1.0
     dff = df.copy()
     if platform != "None":
         dff = dff[dff["platform"] == platform]
     if role != "None":
-        temp1 = dff.shape[0]
         dff = dff[dff["role"] == role]
-        temp2 = dff.shape[0]
-        i1 = temp2 / temp1
 
-    average_winrate = dff["haswon"].sum() / dff.shape[0]
-    rdf = dff.groupby(["operator"]).mean()["haswon"].apply(lambda x:x).reset_index()
-    rdf.rename(columns={"haswon": "WinDelta"}, inplace=True)
-    rdf["WinDelta"] = (rdf["WinDelta"] - average_winrate) * 100
+    # windelta df
+    factor = ["operator"]
+    wdf = dff.groupby(factor).sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
+    wdf["windelta"] = (wdf["haswon"] / wdf["count"] - 0.5) * 100
 
 
-    rdf2 = dff.groupby(["operator"]).count()["platform"].apply(lambda x:x).reset_index()
-    rdf2.rename(columns={"platform": "Presence"}, inplace=True)
-    rdf2["Presence"] = (rdf2["Presence"] / dff.shape[0]) * 1000 * i1
+    # presence df
 
-    rdf3 = pd.concat([rdf, rdf2["Presence"]], axis = 1)
+    pdf = dff.groupby(["operator", "role"]).sum()["count"].apply(lambda x:x).reset_index()
 
-    paths = rdf3["operator"]
+    ## operator df
+    rdf = dff.groupby("role").sum()["count"].apply(lambda x:x).reset_index()
+    rdf.rename(columns={"count": "role_count"}, inplace=True)
+    pdf = pd.merge(rdf, pdf, on="role", how='outer')
+    pdf["presence"] = pdf["count"] / pdf["role_count"] * 500
+
+    # result df
+    result = pd.merge(wdf[["operator", "windelta"]], pdf[["operator", "presence"]], on=factor, how='outer')
+    paths = result["operator"]
 
     fig, ax = plt.subplots()
-    x = rdf3["Presence"]
-    y = rdf3["WinDelta"]
+    x = result["presence"]
+    y = result["windelta"]
     ax.scatter(x, y)
     ax.grid(True)
     ax.set_xlabel('Presence (in %)')

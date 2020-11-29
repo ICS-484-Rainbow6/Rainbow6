@@ -1,7 +1,7 @@
 # Load DataFrame
 import pandas as pd
 
-group = ["gamemode", "mapname", "skillrank", "operator", "platform", "secondarygadget"]
+group = ["gamemode", "mapname", "skillrank", "role", "operator", "platform", "secondarygadget"]
 group_pri = ["primaryweapon", "primaryweapontype", "primarysight", "primarygrip", "primaryunderbarrel", "primarybarrel"]
 group_sec = ["secondaryweapon", "secondaryweapontype", "secondarysight", "secondarygrip", "secondaryunderbarrel", "secondarybarrel"]
 number = ["haswon","nbkills", "isdead", "count"]

@@ -1,2 +1,3 @@
 *.csv
+!resuult.csv
 __pycache__/

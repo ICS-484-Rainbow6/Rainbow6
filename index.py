@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from pages import page1, page2, page_test
+from pages import page1, page2, page3
 
 
 app.layout = html.Div([
@@ -20,8 +20,8 @@ def display_page(pathname):
         return page1.layout
     elif pathname == '/pages/page2':
         return page2.layout
-    elif pathname == '/pages/page_test':
-        return page_test.layout
+    elif pathname == '/pages/page3':
+        return page3.layout
     else:
         return 'Welcome homepage'
 

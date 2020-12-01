@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import numpy as np
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -19,6 +20,23 @@ layout = html.Div([
                              {"label": "PC", "value": "PC"},
                              {"label": "PS4", "value": "PS4"},
                              {"label": "XONE", "value": "XONE"}],
+                         multi=False,
+                         value="None",
+                         style={'width': '49%', 'display': 'inline-block'}
+                         )], style={'width': '49%', 'display': 'inline-block'}),
+
+        html.Div([
+            html.H3("Rank:", style={'width': '49%', 'display': 'inline-block'}),
+            dcc.Dropdown(id="rank_select",
+                         options=[
+                             {"label": "All", "value": "None"},
+                             {"label": "Unranked", "value": "Unranked"},
+                             {"label": "Copper", "value": "Copper"},
+                             {"label": "Bronze", "value": "Bronze"},
+                             {"label": "Silver", "value": "Silver"},
+                             {"label": "Gold", "value": "Gold"},
+                             {"label": "Platinum", "value": "Platinum"},
+                             {"label": "Diamond", "value": "Diamond"}],
                          multi=False,
                          value="None",
                          style={'width': '49%', 'display': 'inline-block'}
@@ -96,26 +114,61 @@ layout = html.Div([
 @app.callback(
     Output(component_id='delta_figure', component_property='figure'),
     [Input(component_id='platform_select', component_property='value'),
+     Input(component_id='rank_select', component_property='value'),
      Input(component_id='map_select', component_property='value'),
      Input(component_id='operator_select', component_property='value')]
 )
-def generate_graph(platform_selected, map_selected, operator_selected):
-    dff = df.copy()
+def generate_graph(platform_selected, rank_selected, map_selected, operator_selected):
+    if operator_selected != "None":
+        dff = df.loc[(df['operator'] == operator_selected)]
+        if rank_selected != "None":
+            dff = dff.loc[(df['skillrank'] == map_selected)]
+        if map_selected != "None":
+            dff = dff.loc[(df['mapname'] == map_selected)]
+        if platform_selected != "None":
+            dff = dff.loc[(df['platform'] == platform_selected)]
 
-    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        #dealing with data
+        factor = [("primaryweapon"), ("secondaryweapon")]
+        wdf = dff.groupby(factor).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
+        wdf['winrate'] = wdf['haswon'] / wdf['count']
+        factor2 = ['operator']
+        avf = dff.groupby(factor2).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
+        avf['winrate'] = avf['haswon'] / avf['count']
+        tempNum = avf['winrate'][0]
+        wdf['winDelta'] = (wdf['winrate'] - tempNum)*100
+        tempNum = avf['count'][0]
+        wdf['presence'] = (wdf['count'] / tempNum)*100
 
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=months,
-        y=[20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
-        name='Primary Product',
-        marker_color='indianred'
-    ))
-    fig.add_trace(go.Bar(
-        x=months,
-        y=[19, 14, 22, 14, 16, 19, 15, 14, 10, 12, 12, 16],
-        name='Secondary Product',
-        marker_color='lightsalmon'
-    ))
-    return fig
+
+        #generate graph
+        fig = go.Figure()
+        for index, row in wdf.iterrows():
+            tempName = row['primaryweapon'] + ' & ' + row['secondaryweapon']
+            fig.add_trace(go.Scatter(x=[row['presence']], y=[row['winDelta']], mode='markers', marker=dict(size=[40]),name=tempName))
+
+        return fig
+    else:
+        t = np.linspace(0, 10, 100)
+
+        fig = go.Figure()
+
+        fig.add_trace(go.Scatter(
+            x=t, y=np.sin(t),
+            name='sin',
+            mode='markers',
+            marker_color='rgba(152, 0, 0, .8)'
+        ))
+
+        fig.add_trace(go.Scatter(
+            x=t, y=np.cos(t),
+            name='cos',
+            marker_color='rgba(255, 182, 193, .9)'
+        ))
+
+        # Set options common to all traces with fig.update_traces
+        fig.update_traces(mode='markers', marker_line_width=2, marker_size=10)
+        fig.update_layout(title='Styled Scatter',
+                          yaxis_zeroline=False, xaxis_zeroline=False)
+        return fig
+

@@ -23,72 +23,71 @@ from app import df
 # App layout
 layout = html.Div([
 
-    html.H1("Win Delta Per Operator VS Presence", style={'text-align': 'center'}),
+    html.Div([
+        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
+                                                             "margin-top": "25",
+                                                             "margin-bottom": "0"}, className='eight columns'),
+    ], className='row'),
 
     html.Div([
         html.Div([
-            html.H3("Platform:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="platform_select",
-                         options=[
-                             {"label": "All", "value": "All"},
-                             {"label": "PC", "value": "PC"},
-                             {"label": "PS4", "value": "PS4"},
-                             {"label": "XONE", "value": "XONE"}],
-                         multi=False,
-                         value="All",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'}),
+            html.P("Platform:"),
+            dcc.Dropdown(
+                id="platform_select",
+                options=[
+                    {"label": "All", "value": "All"},
+                    {"label": "PC", "value": "PC"},
+                    {"label": "PS4", "value": "PS4"},
+                    {"label": "XONE", "value": "XONE"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'}),
 
         html.Div([
-            html.H3("Rank:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="skillrank_select",
-                         options=[
-                             {"label": "All", "value": "All"},
-                             {"label": "Copper & Bronze", "value": "Copper & Bronze"},
-                             {"label": "Silver & Gold", "value": "Silver & Gold"},
-                             {"label": "Platinum+", "value": "Platinum+"}],
-                         multi=False,
-                         value="All",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'}),
+            html.P("Rank:"),
+            dcc.Dropdown(
+                id="skillrank_select",
+                options=[
+                    {"label": "All", "value": "All"},
+                    {"label": "Copper & Bronze", "value": "Copper & Bronze"},
+                    {"label": "Silver & Gold", "value": "Silver & Gold"},
+                    {"label": "Platinum+", "value": "Platinum+"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'}),
 
         html.Div([
-            html.H3("Game Mode:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="gamemode_select",
-                         options=[
-                             {"label": "All", "value": "All"},
-                             {"label": "Bomb", "value": "BOMB"},
-                             {"label": "Secure", "value": "SECURE"},
-                             {"label": "Hostage", "value": "HOSTAGE"}],
-                         multi=False,
-                         value="All",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'}),
+            html.P("Game Mode:"),
+            dcc.Dropdown(
+                id="gamemode_select",
+                options=[
+                    {"label": "All", "value": "All"},
+                    {"label": "Bomb", "value": "BOMB"},
+                    {"label": "Secure", "value": "SECURE"},
+                    {"label": "Hostage", "value": "HOSTAGE"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'}),
 
 
         html.Div([
-            html.H3("Role:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="role_select",
-                         options=[
-                             {"label": "Both", "value": "All"},
-                             {"label": "Attacker", "value": "Attacker"},
-                             {"label": "Defender", "value": "Defender"}],
-                         multi=False,
-                         value="All",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'})
+            html.P("Role:"),
+            dcc.Dropdown(
+                id="role_select",
+                options=[
+                    {"label": "Both", "value": "All"},
+                    {"label": "Attacker", "value": "Attacker"},
+                    {"label": "Defender", "value": "Defender"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'})
     ]),
-
-
-
-
-
     html.Div([html.Img(id='wp_plot', src='', style={
-        'height': '50%',
-        'width': '50%'
+        'height': '45%',
+        'width': '45%'
     })],
              id='plot_div', style={'textAlign': 'center'})
-])
+],  className='ten columns offset-by-one')
 
 
 # ------------------------------------------------------------------------------
@@ -110,7 +109,7 @@ def update_graph(platform, skillrank, gamemode, role):
         dff = dff[dff["platform"] == platform]
 
     if skillrank == "Copper & Bronze":
-            dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+        dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
     if skillrank == "Silver & Gold":
         dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
     if skillrank == "Platinum+":
@@ -122,7 +121,7 @@ def update_graph(platform, skillrank, gamemode, role):
     if role != "All":
         dff = dff[dff["role"] == role]
 
-    
+
 
 
 

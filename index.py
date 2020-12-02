@@ -9,7 +9,10 @@ from pages import page1, page2, page3
 app.layout = html.Div([
     html.Div([
         html.Nav([
-            html.Img(src=app.get_asset_url('logo4.png'), style={'height': '80px', 'padding-left': '30px'}),
+            html.A(
+                html.Img(src=app.get_asset_url('logo4.png'), style={'height': '80px', 'padding-left': '30px'}),
+                href='index.html'
+            ),
             html.Ul([
                 html.Li([
                     html.A('Home', href='index.html'),

@@ -11,6 +11,7 @@ from app import app, df
 #app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
 
 layout = html.Div([
+
     #title
     html.Div([
         html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',

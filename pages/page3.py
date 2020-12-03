@@ -9,8 +9,8 @@ from dash.dependencies import Input, Output
 from app import app, df
 import dash_table as dt
 
-ddff_data={'primaryweapon': 'ITA12L', 'secondaryweapon': 'ITA12S', 'Win Rate %': 0.463, 'Presence Rate %': 0.009, 'kill': 0.526, 'dead': 0.747}
-ddff = pd.DataFrame(ddff_data, columns=['primaryweapon', 'secondaryweapon', 'Win Rate %', 'Presence Rate %', 'kill', 'dead'], index=[])
+ddff_data={'PrimaryWeapon': 'ITA12L', 'SecondaryWeapon': 'ITA12S', 'Win Rate %': 0.463, 'Presence Rate %': 0.009, 'Kill': 0.526, 'Dead': 0.747}
+ddff = pd.DataFrame(ddff_data, columns=['PrimaryWeapon', 'SecondaryWeapon', 'Win Rate %', 'Presence Rate %', 'Kill', 'Dead'], index=[])
 layout = html.Div([
 
     #title
@@ -128,6 +128,7 @@ layout = html.Div([
                 id='datatable',
                 columns=[{"name": i, "id": i} for i in ddff.columns],
                 sort_action='native',
+                style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
 
             )
 
@@ -161,18 +162,20 @@ def generate_table(platform_selected, rank_selected, map_selected, operator_sele
 
         factor = [("primaryweapon"), ("secondaryweapon")]
         table_data = table_data.groupby(factor).sum()[["haswon", "count", "nbkills", "isdead"]].apply(lambda x: x).reset_index()
-        table_data['kill'] = round(table_data['nbkills'] / table_data['count'], 3)
-        table_data['dead'] = round(table_data['isdead'] / table_data['count'], 3)
+        table_data['Kill'] = round(table_data['nbkills'] / table_data['count'], 3)
+        table_data['Dead'] = round(table_data['isdead'] / table_data['count'], 3)
         table_data['Win Rate %'] = round((table_data['haswon'] / table_data['count'])*100, 3)
-
+        table_data['PrimaryWeapon'] = table_data['primaryweapon']
+        table_data['SecondaryWeapon'] = table_data['secondaryweapon']
 
         tempNum = 0
         for each in table_data['count']:
             tempNum += each
         print(tempNum)
         table_data['Presence Rate %'] = round((table_data['count'] / tempNum)*100, 3)
+        factor7 = [("PrimaryWeapon"), ("SecondaryWeapon")]
 
-        res = table_data.groupby(factor).sum()[["Win Rate %", "Presence Rate %", "kill", "dead"]].apply(lambda x: x).reset_index()
+        res = table_data.groupby(factor7).sum()[["Win Rate %", "Presence Rate %", "Kill", "Dead"]].apply(lambda x: x).reset_index()
 
         rows = res.to_dict('records')
         print(rows)

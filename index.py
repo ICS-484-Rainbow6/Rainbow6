@@ -39,7 +39,7 @@ def display_page(pathname):
     elif pathname == '/pages/page3':
         return page3.layout
     else:
-        return html.Img(src=app.get_asset_url('bg2.jpg'))
+        return html.Img(src=app.get_asset_url('bg2.jpg'), style={'margin-top': '-9px'})
 
 if __name__ == '__main__':
     app.run_server(debug=True)

@@ -18,80 +18,100 @@ from app import df
 # App layout
 layout = html.Div([
 
-    html.H1("Operator Presence by rank", style={'text-align': 'center'}),
+    html.Div([
+        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
+                                                             "margin-top": "25",
+                                                             "margin-bottom": "0"}, className='eight columns'),
+    ], className='row'),
 
     html.Div([
         html.Div([
-            html.H3("Platform:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="platform_select",
-                         options=[
-                             {"label": "All", "value": "None"},
-                             {"label": "PC", "value": "PC"},
-                             {"label": "PS4", "value": "PS4"},
-                             {"label": "XONE", "value": "XONE"}],
-                         multi=False,
-                         value="None",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'}),
+            html.P("Platform:"),
+            dcc.Dropdown(
+                id="platform_select",
+                options=[
+                    {"label": "All", "value": "All"},
+                    {"label": "PC", "value": "PC"},
+                    {"label": "PS4", "value": "PS4"},
+                    {"label": "XONE", "value": "XONE"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'}),
 
         html.Div([
-            html.H3("Role:", style={'width': '49%', 'display': 'inline-block'}),
-            dcc.Dropdown(id="role_select",
-                         options=[
-                             {"label": "Both", "value": "None"},
-                             {"label": "Attacker", "value": "Attacker"},
-                             {"label": "Defender", "value": "Defender"}],
-                         multi=False,
-                         value="None",
-                         style={'width': '49%', 'display': 'inline-block'}
-                         )], style={'width': '49%', 'display': 'inline-block'})
+            html.P("Game Mode:"),
+            dcc.Dropdown(
+                id="gamemode_select",
+                options=[
+                    {"label": "All", "value": "All"},
+                    {"label": "Bomb", "value": "BOMB"},
+                    {"label": "Secure", "value": "SECURE"},
+                    {"label": "Hostage", "value": "HOSTAGE"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'}),
+
+
+        html.Div([
+            html.P("Role:"),
+            dcc.Dropdown(
+                id="role_select",
+                options=[
+                    {"label": "Both", "value": "All"},
+                    {"label": "Attacker", "value": "Attacker"},
+                    {"label": "Defender", "value": "Defender"}],
+                multi=False,
+                value="All",
+            )], className='two columns', style={'margin-top': '10'})
     ]),
-
-
-
-
-
     dcc.Graph(id='pbr_figure', figure={})
-])
+],  className='ten columns offset-by-one')
 
 
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
 
-    Output(component_id='pbr_figure', component_property='figure'),
+    Output(component_id='wp_plot', component_property='src'),
     [Input(component_id='platform_select', component_property='value'),
+     Input(component_id='gamemode_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]
 )
 
-def update_graph(platform, role):
+def update_graph(platform, gamemode, role):
 
-    i1 = 1.0
+    # Apply filters
     dff = df.copy()
-    if platform != "None":
+    if platform != "All":
         dff = dff[dff["platform"] == platform]
-    if role != "None":
-        temp1 = dff.shape[0]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+    if role != "All":
         dff = dff[dff["role"] == role]
-        temp2 = dff.shape[0]
-        i1 = temp1 / temp2
 
-    rdf = dff.groupby(["skillrank", "operator"]).count()["platform"].apply(lambda x:x).reset_index()
-    rdf.rename(columns={"platform": "Count"}, inplace=True)
-    rdf2 = dff.groupby(["skillrank"]).count()["platform"].apply(lambda x:x).reset_index()
-    rdf2.rename(columns={"platform": "Count2"}, inplace=True)
-    rdf2["Count2"] = rdf2["Count2"] * i1
-    rdf2 = rdf2.reindex([6,1,0,5,3,4,2]).reset_index()
-    rdf2 = rdf2[["skillrank", "Count2"]]
-    rdf3 = pd.merge(rdf2, rdf, on='skillrank', how='outer')
-    rdf3["Presence"] = rdf3["Count"]/ rdf3["Count2"] * 1000
-    rdf3 = rdf3[rdf3["skillrank"] != "Unranked"]
-    fig = px.line(rdf3, x="skillrank", y="Presence", color="operator")
+    # remove unranked and reserve operators
+    dff = dff[dff["skillrank"] != "Unranked"]
+    dff = dff[~dff["operator"].str.contains('RESERVE')]
+    dff = dff.groupby(["skillrank", "role", "operator"]).sum()["count"].apply(lambda x: x).reset_index()
 
+    # count the total rounds in each skillrank & role group
+
+    rank = dff.groupby(["skillrank"]).sum()["count"].apply(lambda x: x).reset_index()
+    rank = rank.reindex([1,0,5,3,4,2]).reset_index()
+    rank = rank["skillrank"]
+
+    total = dff.groupby(["skillrank", "role"]).sum()["count"].apply(lambda x: x).reset_index()
+    total = pd.merge(rank, total, on=["skillrank"], how='outer')
+    total.rename(columns={"count": "total"}, inplace=True)
+
+    # this merge order matters
+    dff = pd.merge(total, dff, on=["skillrank", "role"], how='outer')
+    dff["presence"] = dff["count"] / dff["total"] * 500
+    fig = px.line(dff, x="skillrank", y="presence", color="operator")
 
     return fig
-
-
 
 # ------------------------------------------------------------------------------
 # other functions

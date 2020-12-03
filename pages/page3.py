@@ -7,9 +7,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app, df
+import dash_table as dt
 
-#app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
-
+ddff_data={'primaryweapon': 'ITA12L', 'secondaryweapon': 'ITA12S', 'Win Rate %': 0.463, 'Presence Rate %': 0.009, 'kill': 0.526, 'dead': 0.747}
+ddff = pd.DataFrame(ddff_data, columns=['primaryweapon', 'secondaryweapon', 'Win Rate %', 'Presence Rate %', 'kill', 'dead'], index=[])
 layout = html.Div([
 
     #title
@@ -121,12 +122,67 @@ layout = html.Div([
         ], className='two columns', style={'margin-top': '10'})
     ], className='row'),
     html.Div([
-        dcc.Graph(id='delta_figure', figure={})
+        html.Div([
+            html.H4('Primary & Secondary Weapon data Per Game', style={'padding-bottom': '26px', 'padding-top': '16px'}),
+            dt.DataTable(
+                id='datatable',
+                columns=[{"name": i, "id": i} for i in ddff.columns],
+                sort_action='native',
+
+            )
+
+        ], className="six columns"),
+        html.Div([
+            dcc.Graph(id='delta_figure', figure={})
+        ], className="six columns")
     ], className='row')
 
 
 ], className='ten columns offset-by-one')
 
+
+# callback and function for the dataTable
+@app.callback(
+    Output('datatable', 'data'),
+    [dash.dependencies.Input('platform_select', 'value'),
+     dash.dependencies.Input('rank_select', 'value'),
+     dash.dependencies.Input('map_select', 'value'),
+     dash.dependencies.Input('operator_select', 'value')]
+)
+def generate_table(platform_selected, rank_selected, map_selected, operator_selected):
+    if operator_selected != "None":
+        table_data = df.loc[(df['operator'] == operator_selected)]
+        if rank_selected != "None":
+            table_data = table_data.loc[(df['skillrank'] == rank_selected)]
+        if map_selected != "None":
+            table_data = table_data.loc[(df['mapname'] == map_selected)]
+        if platform_selected != "None":
+            table_data = table_data.loc[(df['platform'] == platform_selected)]
+
+        factor = [("primaryweapon"), ("secondaryweapon")]
+        table_data = table_data.groupby(factor).sum()[["haswon", "count", "nbkills", "isdead"]].apply(lambda x: x).reset_index()
+        table_data['kill'] = round(table_data['nbkills'] / table_data['count'], 3)
+        table_data['dead'] = round(table_data['isdead'] / table_data['count'], 3)
+        table_data['Win Rate %'] = round((table_data['haswon'] / table_data['count'])*100, 3)
+
+
+        tempNum = 0
+        for each in table_data['count']:
+            tempNum += each
+        print(tempNum)
+        table_data['Presence Rate %'] = round((table_data['count'] / tempNum)*100, 3)
+
+        res = table_data.groupby(factor).sum()[["Win Rate %", "Presence Rate %", "kill", "dead"]].apply(lambda x: x).reset_index()
+
+        rows = res.to_dict('records')
+        print(rows)
+        return rows
+
+    else:
+        return
+
+
+# callback and function for the win Delta Chart
 @app.callback(
     Output(component_id='delta_figure', component_property='figure'),
     [Input(component_id='platform_select', component_property='value'),
@@ -163,28 +219,17 @@ def generate_graph(platform_selected, rank_selected, map_selected, operator_sele
             tempName = row['primaryweapon'] + ' & ' + row['secondaryweapon']
             fig.add_trace(go.Scatter(x=[row['presence']], y=[row['winDelta']], mode='markers', marker=dict(size=[40]),name=tempName))
 
+        fig.update_layout(title='Weapon Influence about Win Rate',
+                          xaxis_title='Presence (in %)',
+                          yaxis_title='Win Delta(in %)')
+
         return fig
     else:
-        t = np.linspace(0, 10, 100)
 
         fig = go.Figure()
+        fig.update_layout(title='Weapon combo Influence about Win Rate',
+                          xaxis_title='Presence (in %)',
+                          yaxis_title='Win Delta(in %)')
 
-        fig.add_trace(go.Scatter(
-            x=t, y=np.sin(t),
-            name='sin',
-            mode='markers',
-            marker_color='rgba(152, 0, 0, .8)'
-        ))
-
-        fig.add_trace(go.Scatter(
-            x=t, y=np.cos(t),
-            name='cos',
-            marker_color='rgba(255, 182, 193, .9)'
-        ))
-
-        # Set options common to all traces with fig.update_traces
-        fig.update_traces(mode='markers', marker_line_width=2, marker_size=10)
-        fig.update_layout(title='Styled Scatter',
-                          yaxis_zeroline=False, xaxis_zeroline=False)
         return fig
 

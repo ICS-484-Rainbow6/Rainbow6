@@ -62,7 +62,7 @@ layout = html.Div([
                 multi=False,
                 value="All",
             )], className='two columns', style={'margin-top': '10'})
-    ]),
+    ], className='row'),
     html.Div([dcc.Graph(id='pbr_figure', figure={})])
 ],  className='ten columns offset-by-one')
 

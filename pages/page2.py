@@ -19,9 +19,9 @@ from app import df
 layout = html.Div([
 
     html.Div([
-        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
-                                                             "margin-top": "25",
-                                                             "margin-bottom": "0"}, className='eight columns'),
+        html.H1("Operator Presence by Rank", style={'font-family': 'Helvetica',
+                                                    "margin-top": "25",
+                                                    "margin-bottom": "0"}, className='eight columns'),
     ], className='row'),
 
     html.Div([
@@ -51,7 +51,6 @@ layout = html.Div([
                 value="All",
             )], className='two columns', style={'margin-top': '10'}),
 
-
         html.Div([
             html.P("Role:"),
             dcc.Dropdown(
@@ -64,7 +63,7 @@ layout = html.Div([
                 value="All",
             )], className='two columns', style={'margin-top': '10'})
     ]),
-    dcc.Graph(id='pbr_figure', figure={})
+    html.Div([dcc.Graph(id='pbr_figure', figure={})])
 ],  className='ten columns offset-by-one')
 
 
@@ -72,7 +71,7 @@ layout = html.Div([
 # Connect the Plotly graphs with Dash Components
 @app.callback(
 
-    Output(component_id='wp_plot', component_property='src'),
+    Output(component_id='pbr_figure', component_property='figure'),
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='gamemode_select', component_property='value'),
      Input(component_id='role_select', component_property='value')]

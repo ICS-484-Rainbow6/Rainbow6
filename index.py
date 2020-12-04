@@ -15,7 +15,6 @@ app.layout = html.Div([
             ),
             html.Ul([
                 html.Li([
-                    html.A('Home', href='index.html'),
                     html.A('Page1', href='/pages/page1'),
                     html.A('Page2', href='/pages/page2'),
                     html.A('Page3', href='/pages/page3'),
@@ -39,7 +38,7 @@ def display_page(pathname):
     elif pathname == '/pages/page3':
         return page3.layout
     else:
-        return html.Img(src=app.get_asset_url('bg2.jpg'), style={'margin-top': '-9px'})
+        return
 
 if __name__ == '__main__':
     app.run_server(debug=True)

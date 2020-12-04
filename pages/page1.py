@@ -83,8 +83,8 @@ layout = html.Div([
             )], className='two columns', style={'margin-top': '10'})
     ]),
     html.Div([html.Img(id='wp_plot', src='', style={
-        'height': '60%',
-        'width': '60%'
+        'height': '50%',
+        'width': '50%'
     })],
              id='plot_div', style={'textAlign': 'center'}),
 ],  className='ten columns offset-by-one')

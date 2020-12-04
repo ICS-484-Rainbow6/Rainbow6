@@ -11,6 +11,7 @@ import dash_table as dt
 
 ddff_data={'PrimaryWeapon': 'ITA12L', 'SecondaryWeapon': 'ITA12S', 'Win Rate %': 0.463, 'Presence Rate %': 0.009, 'Kill': 0.526, 'Dead': 0.747}
 ddff = pd.DataFrame(ddff_data, columns=['PrimaryWeapon', 'SecondaryWeapon', 'Win Rate %', 'Presence Rate %', 'Kill', 'Dead'], index=[])
+
 layout = html.Div([
 
     #title
@@ -129,17 +130,32 @@ layout = html.Div([
                 columns=[{"name": i, "id": i} for i in ddff.columns],
                 sort_action='native',
                 style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
+            ),
 
-            )
 
         ], className="six columns"),
         html.Div([
-            dcc.Graph(id='delta_figure', figure={})
+            dcc.Graph(id='delta_figure', figure={}),
+        ], className="six columns")
+    ], className='row'),
+    html.Div([
+        html.Div([
+
+            dcc.Graph(id='ability_figure', figure={}, style={'margin-top': '-30px'})
+        ], className="six columns"),
+        html.Div([
+            html.P('Win Delta:', style={'fontWeight': 'bold'}),
+            html.P('Win Delta = (The Win rate of Weapon combo) - (The Win rate of the Operator)'),
+            html.P('If the numbers of Win Delta is greater than 0, You have higher probability than average to win this game by using this Weapon combos'),
+            html.P('Presence:', style={'fontWeight': 'bold'}),
+            html.P('Presence = (The presence number of Weapon combo) / (The Overall presence number of the Operator)'),
+            html.P('Presence means the popularity of this Weapon combos.')
         ], className="six columns")
     ], className='row')
 
 
 ], className='ten columns offset-by-one')
+
 
 
 # callback and function for the dataTable
@@ -151,14 +167,15 @@ layout = html.Div([
      dash.dependencies.Input('operator_select', 'value')]
 )
 def generate_table(platform_selected, rank_selected, map_selected, operator_selected):
+    table_data = df.copy()
     if operator_selected != "None":
-        table_data = df.loc[(df['operator'] == operator_selected)]
+        table_data = table_data.loc[(table_data['operator'] == operator_selected)]
         if rank_selected != "None":
-            table_data = table_data.loc[(df['skillrank'] == rank_selected)]
+            table_data = table_data.loc[(table_data['skillrank'] == rank_selected)]
         if map_selected != "None":
-            table_data = table_data.loc[(df['mapname'] == map_selected)]
+            table_data = table_data.loc[(table_data['mapname'] == map_selected)]
         if platform_selected != "None":
-            table_data = table_data.loc[(df['platform'] == platform_selected)]
+            table_data = table_data.loc[(table_data['platform'] == platform_selected)]
 
         factor = [("primaryweapon"), ("secondaryweapon")]
         table_data = table_data.groupby(factor).sum()[["haswon", "count", "nbkills", "isdead"]].apply(lambda x: x).reset_index()
@@ -194,14 +211,15 @@ def generate_table(platform_selected, rank_selected, map_selected, operator_sele
      Input(component_id='operator_select', component_property='value')]
 )
 def generate_graph(platform_selected, rank_selected, map_selected, operator_selected):
+    dff = df.copy()
     if operator_selected != "None":
-        dff = df.loc[(df['operator'] == operator_selected)]
+        dff = dff.loc[(dff['operator'] == operator_selected)]
         if rank_selected != "None":
-            dff = dff.loc[(df['skillrank'] == rank_selected)]
+            dff = dff.loc[(dff['skillrank'] == rank_selected)]
         if map_selected != "None":
-            dff = dff.loc[(df['mapname'] == map_selected)]
+            dff = dff.loc[(dff['mapname'] == map_selected)]
         if platform_selected != "None":
-            dff = dff.loc[(df['platform'] == platform_selected)]
+            dff = dff.loc[(dff['platform'] == platform_selected)]
 
         #dealing with data
         factor = [("primaryweapon"), ("secondaryweapon")]
@@ -220,11 +238,15 @@ def generate_graph(platform_selected, rank_selected, map_selected, operator_sele
         fig = go.Figure()
         for index, row in wdf.iterrows():
             tempName = row['primaryweapon'] + ' & ' + row['secondaryweapon']
-            fig.add_trace(go.Scatter(x=[row['presence']], y=[row['winDelta']], mode='markers', marker=dict(size=[40]),name=tempName))
+            fig.add_trace(go.Scatter(x=[row['presence']], y=[row['winDelta']], mode='markers', marker=dict(size=[20]),name=tempName))
 
         fig.update_layout(title='Weapon Influence about Win Rate',
                           xaxis_title='Presence (in %)',
-                          yaxis_title='Win Delta(in %)')
+                          yaxis_title='Win Delta(in %)',
+                          yaxis_zeroline=True,
+                          yaxis_zerolinecolor='red',
+                          )
+
 
         return fig
     else:
@@ -236,3 +258,126 @@ def generate_graph(platform_selected, rank_selected, map_selected, operator_sele
 
         return fig
 
+@app.callback(
+    Output(component_id='ability_figure', component_property='figure'),
+    [Input(component_id='platform_select', component_property='value'),
+     Input(component_id='rank_select', component_property='value'),
+     Input(component_id='map_select', component_property='value'),
+     Input(component_id='operator_select', component_property='value')]
+)
+def generate_abgraph(platform_selected, rank_selected, map_selected, operator_selected):
+    if operator_selected != "None":
+        temp_df = df.copy()
+
+        if rank_selected != "None":
+            temp_df = temp_df.loc[(temp_df['skillrank'] == rank_selected)]
+        if map_selected != "None":
+            temp_df = temp_df.loc[(temp_df['mapname'] == map_selected)]
+        if platform_selected != "None":
+            temp_df = temp_df.loc[(temp_df['platform'] == platform_selected)]
+
+        factor2 = [('operator'),('role')]
+        temp_df = temp_df.groupby(factor2).sum()[["haswon", "count", "nbkills", "isdead"]].apply(lambda x: x).reset_index()
+        temp_df['Kill'] = temp_df['nbkills'] / temp_df['count']
+        temp_df['Dead'] = temp_df['isdead'] / temp_df['count']
+        temp_df['Win Rate'] = temp_df['haswon'] / temp_df['count']
+        temp_df['Presence'] = (temp_df['count'] / 25410736)*500
+
+        Att_df = temp_df.loc[(temp_df['role'] == 'Attacker')]
+        Def_df = temp_df.loc[(temp_df['role'] == 'Defender')]
+        cur_role = ''
+        cur_df = Att_df
+
+        for index, row in temp_df.iterrows():
+            if row['operator'] == operator_selected:
+                cur_role = row['role']
+
+        if cur_role == 'Defender':
+            cur_df = Def_df
+
+
+        #Win Rate Rank
+        winRank_df = cur_df.groupby('operator').sum()[['Win Rate']].apply(lambda x: x).reset_index()
+        winRank_df = winRank_df.sort_values('Win Rate')
+        #Kill Rank    high to low
+        killRank_df = cur_df.groupby('operator').sum()[['Kill']].apply(lambda x: x).reset_index()
+        killRank_df = killRank_df.sort_values('Kill')
+        #dead Rank
+        deadRank_df = cur_df.groupby('operator').sum()[['Dead']].apply(lambda x: x).reset_index()
+        deadRank_df = deadRank_df.sort_values('Dead', ascending=False)
+        #Popularity Rank   high to low
+        popularity_df = cur_df.groupby('operator').sum()[['Presence']].apply(lambda x: x).reset_index()
+        popularity_df = popularity_df.sort_values('Presence')
+
+        #Calculate score for each element
+
+        kill_rank = 0
+        for index, row in killRank_df.iterrows():
+            kill_rank += 1
+            if row['operator'] == operator_selected:
+                break
+
+
+        dead_rank = 0
+        for index, row in deadRank_df.iterrows():
+            dead_rank += 1
+            if row['operator'] == operator_selected:
+                break
+
+
+        win_rank = 0
+        for index, row in winRank_df.iterrows():
+            win_rank += 1
+            if row['operator'] == operator_selected:
+                break
+
+
+        popularity_rank = 0
+        for index, row in popularity_df.iterrows():
+            popularity_rank += 1
+            if row['operator'] == operator_selected:
+                break
+
+        #score
+        kill_score = kill_rank/4
+        dead_score = dead_rank/4
+        win_score = win_rank/4
+        popularity_score = popularity_rank/4
+        print("there is test for score: \n")
+        print(kill_score, dead_score,win_score,popularity_score)
+
+
+        #generate graph
+
+
+        test_df = pd.DataFrame(dict(
+            r=[win_score, kill_score, popularity_score, dead_score],
+            theta=['Win Rate', 'Kill', 'Popularity',
+                   'Survive']))
+        fig77 = px.line_polar(test_df, r='r', theta='theta', line_close=True)
+        fig77.update_traces(fill='toself')
+        fig77.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 5]
+                )),
+            showlegend=False
+        )
+        return fig77
+    else:
+        test_df = pd.DataFrame(dict(
+            r=[0, 0, 0, 0],
+            theta=['Win Rate', 'Kill', 'Popularity',
+                   'Survive']))
+        fig77 = px.line_polar(test_df, r='r', theta='theta', line_close=True)
+        fig77.update_traces(fill='toself')
+        fig77.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 5]
+                )),
+            showlegend=False
+        )
+        return fig77

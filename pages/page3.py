@@ -277,6 +277,11 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
     if operator_selected != "None":
         temp_df = df.copy()
 
+        temp_df = temp_df[temp_df.operator != 'SWAT-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'GIGN-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'GSG9-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'SAS-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'SPETSNAZ-RESERVE']
         if rank_selected != "None":
             temp_df = temp_df.loc[(temp_df['skillrank'] == rank_selected)]
         if map_selected != "None":
@@ -350,10 +355,10 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
                 break
 
         #score
-        kill_score = kill_rank/4
-        dead_score = dead_rank/4
-        win_score = win_rank/4
-        popularity_score = popularity_rank/4
+        kill_score = kill_rank/3
+        dead_score = dead_rank/3
+        win_score = win_rank/3
+        popularity_score = popularity_rank/3
         print("there is test for score: \n")
         print(kill_score, dead_score,win_score,popularity_score)
 

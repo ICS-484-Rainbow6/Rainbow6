@@ -7,6 +7,14 @@
 }
 body{
     font-family: montserrat;
+    margin-top: 50px;
+}
+html { 
+    background: url("bg3.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 .bg{
     background: black;
@@ -15,6 +23,8 @@ nav{
     background: black;
     height: 80px;
     width: 100%;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
 }
 label.logo{
     color: white;
@@ -44,3 +54,7 @@ nav ul li a.active,nav ul li a:hover{
     transition: .5s;
 }
 
+.ten.columns{
+    background-color: white;
+    padding: 50px 50px 0px 50px
+}

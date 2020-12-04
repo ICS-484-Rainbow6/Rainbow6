@@ -140,16 +140,24 @@ layout = html.Div([
     ], className='row'),
     html.Div([
         html.Div([
-
-            dcc.Graph(id='ability_figure', figure={}, style={'margin-top': '-30px'})
+            html.H4('Operator Capability', style={'margin-top': '-10px'}),
+            html.P('5 is the maximum value for each dimension,'),
+            html.P('which means the operator is the best at this ability for overall.'),
+            dcc.Graph(id='ability_figure', figure={})
         ], className="six columns"),
         html.Div([
             html.P('Win Delta:', style={'fontWeight': 'bold'}),
-            html.P('Win Delta = (The Win rate of Weapon combo) - (The Win rate of the Operator)'),
-            html.P('If the numbers of Win Delta is greater than 0, You have higher probability than average to win this game by using this Weapon combos'),
+            html.P('Win Delta = (The Win rate of WeaponCombo) - (The Win rate of the Operator)'),
+            html.P('If the numbers of Win Delta is greater than 0, You have higher probability than average to win this game by using this Weapon combos.'),
             html.P('Presence:', style={'fontWeight': 'bold'}),
-            html.P('Presence = (The presence number of Weapon combo) / (The Overall presence number of the Operator)'),
-            html.P('Presence means the popularity of this Weapon combos.')
+            html.P('Presence = (The presence number of WeaponCombo) / (The Overall presence number of the Operator)'),
+            html.P('Presence means the popularity of this WeaponCombos.'),
+            html.P('Kill: (in Table)', style={'fontWeight': 'bold'}),
+            html.P('Kill = (The total kill of the WeaponCombo) / (The number of picked times of the WeaponCombo)'),
+            html.P('Kill means the average kills can get in each round when you pick the WeaponCombo.'),
+            html.P('Dead: (in Table)', style={'fontWeight': 'bold'}),
+            html.P('Dead = (The total Dead when pick WeaponCombo) / (The number of picked times of the WeaponCombo)'),
+            html.P('Dead means the average dead times in each round when you pick the WeaponCombo.'),
         ], className="six columns")
     ], className='row')
 

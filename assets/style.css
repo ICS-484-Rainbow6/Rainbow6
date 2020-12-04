@@ -7,6 +7,10 @@
 }
 body{
     font-family: montserrat;
+    background-image: url("bg3.jpg");
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 nav{
     background: black;
@@ -41,3 +45,7 @@ nav ul li a.active,nav ul li a:hover{
     transition: .5s;
 }
 
+.ten.columns{
+    background-color: white;
+    padding: 50px 50px 0px 50px
+}

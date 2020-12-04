@@ -82,14 +82,27 @@ layout = html.Div([
                 multi=False,
                 value="All",
             )], className='two columns', style={'margin-top': '10'})
-    ], className='row'),
+    ], className='row', style={'padding-bottom': '20px'}),
+
     html.Div([html.Img(id='wp_plot', src='', style={
-        'height': '50%',
-        'width': '50%'
-    })],
-             id='plot_div', style={'textAlign': 'center'}),
-    html.Div(id='tier_list', className='row')
-],  className='ten columns offset-by-one')
+        'height': '40%',
+        'width': '60%',
+        'padding-top': '20px',
+        'padding-left': '10px',
+        'padding-bottom': '16px',
+    }, className='eight columns'),
+              html.Div([
+                  html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('I am a long long long very very very very long long long long sentence for testing', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('I am a long long long very very very very long long long long sentence for testing', style={'fontWeight': 'bold', 'color': 'white'})
+              ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
+              ], className='row', style={'background': '#2b2b2b'}),
+
+
+    html.Div(id='tier_list', className='row', style={'padding-top': '30px'}),
+
+],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 
 
 # ------------------------------------------------------------------------------
@@ -326,12 +339,17 @@ def generate_tierList(platform, skillrank, gamemode, role):
     #generate html component
     return html.Div([
         html.Div([
+            html.H2('Tier Rank for Operators'),
+            html.P('We rank Operators based on their scores.'),
+            html.P("The scores is based on each operator's performance on Win Rate, Kill, Survive, Popularity.")
+        ], className='row', style={'color': 'white', 'text-align': 'center'}),
+        html.Div([
             html.Div([
                 html.H6('S', className='half column',
                         style={'background': '#ff6a6a','padding-top': '20px', 'padding-bottom':'20px',
                                'text-align': 'center'}),
                 html.Div(rankS, className='ranks')
-            ], className='row', style={'background': '#11212b'}),
+            ], className='row', style={'background': '#323232'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom':'5px', 'padding-left':'5px'}),
         html.Div([
             html.Div([
@@ -339,7 +357,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                         style={'background': '#ffb977', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
                 html.Div(rankA, className='ranks')
-            ], className='row', style={'background': '#11212b'}),
+            ], className='row', style={'background': '#323232'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
             html.Div([
@@ -347,7 +365,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                         style={'background': '#ffdd79', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
                 html.Div(rankB, className='ranks')
-            ], className='row', style={'background': '#11212b'}),
+            ], className='row', style={'background': '#323232'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
             html.Div([
@@ -355,7 +373,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                         style={'background': '#feff7c', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
                 html.Div(rankC, className='ranks')
-            ], className='row', style={'background': '#11212b'}),
+            ], className='row', style={'background': '#323232'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
             html.Div([
@@ -363,6 +381,6 @@ def generate_tierList(platform, skillrank, gamemode, role):
                         style={'background': '#b5ff7b', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
                 html.Div(rankD, className='ranks')
-            ], className='row', style={'background': '#11212b'}),
+            ], className='row', style={'background': '#323232'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'})
-    ],  className='row', style={'background': '#0f1d26'})
+    ],  className='row', style={'background': '#2b2b2b'})

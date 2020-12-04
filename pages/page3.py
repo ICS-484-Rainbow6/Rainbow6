@@ -162,7 +162,7 @@ layout = html.Div([
     ], className='row')
 
 
-], className='ten columns offset-by-one')
+], className='ten columns offset-by-one', style={'opacity': '0.955'})
 
 
 

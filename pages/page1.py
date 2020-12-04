@@ -81,7 +81,7 @@ layout = html.Div([
                 multi=False,
                 value="All",
             )], className='two columns', style={'margin-top': '10'})
-    ]),
+    ], className='row'),
     html.Div([html.Img(id='wp_plot', src='', style={
         'height': '50%',
         'width': '50%'

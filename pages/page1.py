@@ -1,5 +1,6 @@
 
 import pandas as pd
+import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
@@ -285,12 +286,51 @@ def generate_tierList(platform, skillrank, gamemode, role):
         score_total[a] = (score_win[a] + score_kill[a] + score_dead[a] + score_popularity[a]) / num_div
 
     temp_df['score'] = score_total
+    temp_df['rank'] = np.ceil(temp_df['score'] / 4)
+
+    rank_df = temp_df.reset_index()[["operator", "rank"]]
+
+    rankS_df = rank_df[rank_df["rank"] == 5]
+    rankA_df = rank_df[rank_df["rank"] == 4]
+    rankB_df = rank_df[rank_df["rank"] == 3]
+    rankC_df = rank_df[rank_df["rank"] == 2]
+    rankD_df = rank_df[rank_df["rank"] == 1]
+
+    rankS = []
+    rankA = []
+    rankB = []
+    rankC = []
+    rankD = []
+
+    def getImage(op):
+        path = 'png/' + op + '.png'
+        encoded_image = base64.b64encode(open(path, 'rb').read())
+        str = html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')
+        return str
+
+    for op in rankS_df["operator"]:
+        rankS.append(getImage(op))
+
+    for op in rankA_df["operator"]:
+        rankA.append(getImage(op))
+
+    for op in rankB_df["operator"]:
+        rankB.append(getImage(op))
+
+    for op in rankC_df["operator"]:
+        rankC.append(getImage(op))
+
+    for op in rankD_df["operator"]:
+        rankD.append(getImage(op))
 
     #generate html component
     return html.Div([
         html.Div([
             html.Div([
-                html.H6('S', className='half column', style={'background': '#ff6a6a','padding-top': '20px', 'padding-bottom':'20px', 'text-align': 'center'}),
+                html.H6('S', className='half column',
+                        style={'background': '#ff6a6a','padding-top': '20px', 'padding-bottom':'20px',
+                               'text-align': 'center'}),
+                html.Div(rankS, className='ranks')
             ], className='row', style={'background': '#11212b'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom':'5px', 'padding-left':'5px'}),
         html.Div([
@@ -298,7 +338,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                 html.H6('A', className='half column',
                         style={'background': '#ffb977', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
-                html.P("lalal")
+                html.Div(rankA, className='ranks')
             ], className='row', style={'background': '#11212b'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
@@ -306,7 +346,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                 html.H6('B', className='half column',
                         style={'background': '#ffdd79', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
-                html.P("lalal")
+                html.Div(rankB, className='ranks')
             ], className='row', style={'background': '#11212b'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
@@ -314,7 +354,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                 html.H6('C', className='half column',
                         style={'background': '#feff7c', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
-                html.P("lalal")
+                html.Div(rankC, className='ranks')
             ], className='row', style={'background': '#11212b'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'}),
         html.Div([
@@ -322,7 +362,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
                 html.H6('D', className='half column',
                         style={'background': '#b5ff7b', 'padding-top': '20px', 'padding-bottom': '20px',
                                'text-align': 'center'}),
-                html.P("lalal")
+                html.Div(rankD, className='ranks')
             ], className='row', style={'background': '#11212b'}),
         ], className='row', style={'padding-top': '5px', 'padding-bottom': '5px', 'padding-left': '5px'})
     ],  className='row', style={'background': '#0f1d26'})

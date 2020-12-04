@@ -7,7 +7,6 @@
 }
 body{
     font-family: montserrat;
-    margin-top: 50px;
 }
 html { 
     background: url("bg3.jpg") no-repeat center center fixed; 
@@ -23,8 +22,6 @@ nav{
     background: black;
     height: 80px;
     width: 100%;
-    position: fixed; /* Set the navbar to fixed position */
-    top: 0; /* Position the navbar at the top of the page */
 }
 label.logo{
     color: white;

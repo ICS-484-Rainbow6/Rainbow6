@@ -16,6 +16,9 @@ html {
     -o-background-size: cover;
     background-size: cover;
 }
+.bg{
+    background: black;
+}
 nav{
     background: black;
     height: 80px;

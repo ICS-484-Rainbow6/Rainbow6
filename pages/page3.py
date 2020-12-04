@@ -289,7 +289,10 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
         temp_df['Kill'] = temp_df['nbkills'] / temp_df['count']
         temp_df['Dead'] = temp_df['isdead'] / temp_df['count']
         temp_df['Win Rate'] = temp_df['haswon'] / temp_df['count']
-        temp_df['Presence'] = (temp_df['count'] / 25410736)*500
+        totalnum = 0
+        for each in temp_df['count']:
+            totalnum += each
+        temp_df['Presence'] = (temp_df['count'] / totalnum)*500
 
         Att_df = temp_df.loc[(temp_df['role'] == 'Attacker')]
         Def_df = temp_df.loc[(temp_df['role'] == 'Defender')]

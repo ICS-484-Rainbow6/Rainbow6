@@ -171,7 +171,7 @@ def update_graph(platform, skillrank, gamemode, role):
     plt.axhline(0, color='red')
     plt.axvline(30, color='red')
     for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('png/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
+        ab = AnnotationBbox(OffsetImage(Image.open('assets/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)
     out_url = fig_to_url(fig)
 
@@ -316,7 +316,7 @@ def generate_tierList(platform, skillrank, gamemode, role):
     rankD = []
 
     def getImage(op):
-        path = 'png/' + op + '.png'
+        path = 'assets/' + op + '.png'
         encoded_image = base64.b64encode(open(path, 'rb').read())
         str = html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')
         return str

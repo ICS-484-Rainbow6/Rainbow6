@@ -110,12 +110,6 @@ Output('combo_table', 'data'),
 
 def update_graph(platform, skillrank, gamemode, role):
 
-    def getImage(op):
-        path = 'png/' + op + '.png'
-        encoded_image = base64.b64encode(open(path, 'rb').read())
-        str = html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')
-        return str
-
     # Apply filters
     dff = combodf.copy()
     if platform != "All":

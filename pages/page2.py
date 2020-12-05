@@ -11,14 +11,14 @@ from app import combodf
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
-size = 10
+size = 20
 
 # ------------------------------------------------------------------------------
 # App layout
 layout = html.Div([
 
     html.Div([
-        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
+        html.H1("Most Popular Teams", style={'font-family': 'Helvetica',
                                                              "margin-top": "25",
                                                              "margin-bottom": "0"}, className='eight columns'),
     ], className='row'),
@@ -74,7 +74,20 @@ layout = html.Div([
                     {"label": "Defender", "value": "Defender"}],
                 multi=False,
                 value="All",
+            )], className='two columns', style={'margin-top': '10'}),
+
+        html.Div([
+            html.P("Preference:"),
+            dcc.Dropdown(
+                id="preference_select",
+                options=[
+                    {"label": "Size First", "value": "Size"},
+                    {"label": "Win Rate First", "value": "WinRate"}],
+                multi=False,
+                value="Size",
             )], className='two columns', style={'margin-top': '10'})
+
+
     ], className='row', style={'padding-bottom': '20px'}),
 
     html.Div([
@@ -86,7 +99,7 @@ layout = html.Div([
                          dict(name='Sample Size', id='Sample'),
                          dict(name='Kill', id='Kill'),
                          dict(name='Death', id='Death'),
-                ],
+                         ],
                 css=[
                     dict(selector='img[alt=OperatorIcon]', rule='height: 50px;')
                 ],
@@ -101,14 +114,15 @@ layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-Output('combo_table', 'data'),
-[Input(component_id='platform_select', component_property='value'),
- Input(component_id='skillrank_select', component_property='value'),
- Input(component_id='gamemode_select', component_property='value'),
- Input(component_id='role_select', component_property='value')]
+    Output('combo_table', 'data'),
+    [Input(component_id='platform_select', component_property='value'),
+     Input(component_id='skillrank_select', component_property='value'),
+     Input(component_id='gamemode_select', component_property='value'),
+     Input(component_id='role_select', component_property='value'),
+     Input(component_id='preference_select', component_property='value')]
 )
 
-def update_graph(platform, skillrank, gamemode, role):
+def update_graph(platform, skillrank, gamemode, role, preference):
 
     # Apply filters
     dff = combodf.copy()
@@ -137,8 +151,12 @@ def update_graph(platform, skillrank, gamemode, role):
     dff['Win Rate %'] = round((dff['haswon'] / dff['count'])*100, 3)
     dff['Sample Size'] = dff['count']
 
+    if preference == "Size":
+        dff = dff.sort_values(by=["Sample Size"])
+    else:
+        dff = dff.sort_values(by=["Win Rate %"])
 
-    result = dff.head(size)
+    result = dff.tail(size)
 
     def getTeam(team):
         str = ''

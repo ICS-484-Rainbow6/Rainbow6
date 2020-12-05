@@ -164,7 +164,7 @@ def update_graph(platform, skillrank, gamemode, role, preference):
 
         for op in team_ops:
 
-            str += '![OperatorIcon](https://raw.githubusercontent.com/ICS-484-Rainbow6/Rainbow6/main/png/' + op + '.png)'
+            str += '![OperatorIcon](/assets/' + op + '.png)'
         return str
 
     rows = result.to_dict('records')

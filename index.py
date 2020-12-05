@@ -3,7 +3,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from pages import page1, page2, page3, page4
+
+from pages import page1, page2, page3, page4, homepage
+
 
 
 app.layout = html.Div([
@@ -11,7 +13,7 @@ app.layout = html.Div([
         html.Nav([
             html.A(
                 html.Img(src=app.get_asset_url('logo4.png'), style={'height': '80px', 'padding-left': '30px'}),
-                href='index.html'
+                href='/pages/homepage'
             ),
             html.Ul([
                 html.Li([
@@ -37,11 +39,13 @@ def display_page(pathname):
     if pathname == '/pages/page1':
         return page1.layout
     elif pathname == '/pages/page2':
-        return page2.layout
+        return page1.layout
     elif pathname == '/pages/page3':
         return page3.layout
     elif pathname == '/pages/page4':
         return page4.layout
+    elif pathname == '/pages/homepage':
+        return homepage.layout
     else:
         return
 

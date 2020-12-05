@@ -11,7 +11,7 @@ from app import combodf
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
-ddff = pd.DataFrame(columns=['Team', 'Win Rate %', 'Sample Size', 'Kill', 'Death'], index=[])
+size = 10
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -81,27 +81,40 @@ layout = html.Div([
         html.Div([
             dt.DataTable(
                 id='combo_table',
-                columns=[{"name": i, "id": i} for i in ddff.columns],
+                columns=[dict(name='Team Members', id='Team', type='text', presentation='markdown'),
+                         dict(name='Win Rate %', id='Win'),
+                         dict(name='Sample Size', id='Sample'),
+                         dict(name='Kill', id='Kill'),
+                         dict(name='Death', id='Death'),
+                ],
+                css=[
+                    dict(selector='img[alt=OperatorIcon]', rule='height: 50px;')
+                ],
                 sort_action='native',
                 style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
             ),
         ]),
     ], className='row'),
-
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 
 
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    Output('combo_table', 'data'),
-    [Input(component_id='platform_select', component_property='value'),
-     Input(component_id='skillrank_select', component_property='value'),
-     Input(component_id='gamemode_select', component_property='value'),
-     Input(component_id='role_select', component_property='value')]
+Output('combo_table', 'data'),
+[Input(component_id='platform_select', component_property='value'),
+ Input(component_id='skillrank_select', component_property='value'),
+ Input(component_id='gamemode_select', component_property='value'),
+ Input(component_id='role_select', component_property='value')]
 )
 
 def update_graph(platform, skillrank, gamemode, role):
+
+    def getImage(op):
+        path = 'png/' + op + '.png'
+        encoded_image = base64.b64encode(open(path, 'rb').read())
+        str = html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')
+        return str
 
     # Apply filters
     dff = combodf.copy()
@@ -131,10 +144,27 @@ def update_graph(platform, skillrank, gamemode, role):
     dff['Sample Size'] = dff['count']
 
 
-    result = dff.head(50)
+    result = dff.head(size)
+
+    def getTeam(team):
+        str = ''
+        team_ops = team.split(',')
+        print(team_ops)
+        for op in team_ops:
+            print(op)
+            str += '![OperatorIcon](https://raw.githubusercontent.com/ICS-484-Rainbow6/Rainbow6/main/png/' + op + '.png)'
+        return str
 
     rows = result.to_dict('records')
-
+    print("~~~row~~~")
+    for i in range(0, size):
+        temp_team = rows[i]['Team']
+        temp_win = rows[i]['Win Rate %']
+        temp_sample = rows[i]['Sample Size']
+        temp_kill = rows[i]['Kill']
+        temp_death = rows[i]['Death']
+        rows[i] = dict(Team=getTeam(temp_team), Win=temp_win, Sample=temp_sample, Kill=temp_kill, Death=temp_death)
+    print(rows)
     return rows
 
 

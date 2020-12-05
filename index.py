@@ -39,7 +39,7 @@ def display_page(pathname):
     if pathname == '/pages/page1':
         return page1.layout
     elif pathname == '/pages/page2':
-        return page1.layout
+        return page2.layout
     elif pathname == '/pages/page3':
         return page3.layout
     elif pathname == '/pages/page4':

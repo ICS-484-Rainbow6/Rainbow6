@@ -161,14 +161,14 @@ def update_graph(platform, skillrank, gamemode, role, preference):
     def getTeam(team):
         str = ''
         team_ops = team.split(',')
-        print(team_ops)
+
         for op in team_ops:
-            print(op)
+
             str += '![OperatorIcon](https://raw.githubusercontent.com/ICS-484-Rainbow6/Rainbow6/main/png/' + op + '.png)'
         return str
 
     rows = result.to_dict('records')
-    print("~~~row~~~")
+
     for i in range(0, size):
         temp_team = rows[i]['Team']
         temp_win = rows[i]['Win Rate %']
@@ -176,7 +176,7 @@ def update_graph(platform, skillrank, gamemode, role, preference):
         temp_kill = rows[i]['Kill']
         temp_death = rows[i]['Death']
         rows[i] = dict(Team=getTeam(temp_team), Win=temp_win, Sample=temp_sample, Kill=temp_kill, Death=temp_death)
-    print(rows)
+
     return rows
 
 

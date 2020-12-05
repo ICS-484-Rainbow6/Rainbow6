@@ -1,25 +1,17 @@
 
 import pandas as pd
-import numpy as np
-
-import matplotlib.pyplot as plt
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-from PIL import Image
-
-from io import BytesIO
-import base64
-
+import dash_table as dt
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from app import df
+from app import combodf
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
-df = pd.read_csv("combo.csv")
+ddff = pd.DataFrame(columns=['Team', 'Win Rate %', 'Sample Size', 'Kill', 'Death'], index=[])
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -85,7 +77,16 @@ layout = html.Div([
             )], className='two columns', style={'margin-top': '10'})
     ], className='row', style={'padding-bottom': '20px'}),
 
-    html.P("hey!", id="combo_table")
+    html.Div([
+        html.Div([
+            dt.DataTable(
+                id='combo_table',
+                columns=[{"name": i, "id": i} for i in ddff.columns],
+                sort_action='native',
+                style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
+            ),
+        ]),
+    ], className='row'),
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 
@@ -103,7 +104,7 @@ layout = html.Div([
 def update_graph(platform, skillrank, gamemode, role):
 
     # Apply filters
-    dff = df.copy()
+    dff = combodf.copy()
     if platform != "All":
         dff = dff[dff["platform"] == platform]
 
@@ -120,9 +121,22 @@ def update_graph(platform, skillrank, gamemode, role):
     if role != "All":
         dff = dff[dff["role"] == role]
 
+    dff = dff[dff["count"] > 1000]
+
+    dff = dff.groupby("grouped").sum()[["haswon", "count", "nbkills", "isdead"]].apply(lambda x: x).reset_index()
+    dff['Team'] = dff['grouped']
+    dff['Kill'] = round(dff['nbkills'] / dff['count'], 3)
+    dff['Death'] = round(dff['isdead'] / dff['count'], 3)
+    dff['Win Rate %'] = round((dff['haswon'] / dff['count'])*100, 3)
+    dff['Sample Size'] = dff['count']
 
 
-    return dff
+    result = dff.head(50)
+
+    rows = result.to_dict('records')
+
+    return rows
+
 
 
 

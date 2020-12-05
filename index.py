@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from pages import page1, page3, page4
+from pages import page1, page2, page3, page4
 
 
 app.layout = html.Div([
@@ -16,6 +16,7 @@ app.layout = html.Div([
             html.Ul([
                 html.Li([
                     html.A('Page1', href='/pages/page1'),
+                    html.A('Page2', href='/pages/page2'),
                     html.A('Page3', href='/pages/page3'),
                     html.A('Page4', href='/pages/page4'),
                     html.A('About', href='#')

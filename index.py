@@ -47,7 +47,7 @@ def display_page(pathname):
     elif pathname == '/pages/homepage':
         return homepage.layout
     else:
-        return
+        return homepage.layout
 
 if __name__ == '__main__':
     app.run_server(debug=True)

@@ -19,6 +19,7 @@ from app import df
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
+df = pd.read_csv("combo.csv")
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -84,7 +85,7 @@ layout = html.Div([
             )], className='two columns', style={'margin-top': '10'})
     ], className='row', style={'padding-bottom': '20px'}),
 
-    html.P("hey!", id="some_table")
+    html.P("hey!", id="combo_table")
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 
@@ -92,7 +93,7 @@ layout = html.Div([
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
-    Output(component_id='some_table', component_property='children'),
+    Output('combo_table', 'data'),
     [Input(component_id='platform_select', component_property='value'),
      Input(component_id='skillrank_select', component_property='value'),
      Input(component_id='gamemode_select', component_property='value'),
@@ -101,8 +102,27 @@ layout = html.Div([
 
 def update_graph(platform, skillrank, gamemode, role):
 
+    # Apply filters
+    dff = df.copy()
+    if platform != "All":
+        dff = dff[dff["platform"] == platform]
 
-    return "yoyo"
+    if skillrank == "Copper & Bronze":
+        dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+    if skillrank == "Silver & Gold":
+        dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
+    if skillrank == "Platinum+":
+        dff = dff[(dff["skillrank"] == "Platinum") | (dff["skillrank"] == "Diamond")]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+    if role != "All":
+        dff = dff[dff["role"] == role]
+
+
+
+    return dff
 
 
 

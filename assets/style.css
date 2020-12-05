@@ -55,3 +55,10 @@ nav ul li a.active,nav ul li a:hover{
     background-color: white;
     padding: 50px 50px 0px 50px
 }
+.ranks{
+    padding: 5px
+}
+.opImage{
+    height: 75px;
+    padding: 5px
+}

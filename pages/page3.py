@@ -162,7 +162,7 @@ layout = html.Div([
     ], className='row')
 
 
-], className='ten columns offset-by-one')
+], className='ten columns offset-by-one', style={'opacity': '0.955'})
 
 
 
@@ -277,6 +277,11 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
     if operator_selected != "None":
         temp_df = df.copy()
 
+        temp_df = temp_df[temp_df.operator != 'SWAT-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'GIGN-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'GSG9-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'SAS-RESERVE']
+        temp_df = temp_df[temp_df.operator != 'SPETSNAZ-RESERVE']
         if rank_selected != "None":
             temp_df = temp_df.loc[(temp_df['skillrank'] == rank_selected)]
         if map_selected != "None":
@@ -289,7 +294,10 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
         temp_df['Kill'] = temp_df['nbkills'] / temp_df['count']
         temp_df['Dead'] = temp_df['isdead'] / temp_df['count']
         temp_df['Win Rate'] = temp_df['haswon'] / temp_df['count']
-        temp_df['Presence'] = (temp_df['count'] / 25410736)*500
+        totalnum = 0
+        for each in temp_df['count']:
+            totalnum += each
+        temp_df['Presence'] = (temp_df['count'] / totalnum)*500
 
         Att_df = temp_df.loc[(temp_df['role'] == 'Attacker')]
         Def_df = temp_df.loc[(temp_df['role'] == 'Defender')]
@@ -347,10 +355,10 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
                 break
 
         #score
-        kill_score = kill_rank/4
-        dead_score = dead_rank/4
-        win_score = win_rank/4
-        popularity_score = popularity_rank/4
+        kill_score = kill_rank/3
+        dead_score = dead_rank/3
+        win_score = win_rank/3
+        popularity_score = popularity_rank/3
         print("there is test for score: \n")
         print(kill_score, dead_score,win_score,popularity_score)
 

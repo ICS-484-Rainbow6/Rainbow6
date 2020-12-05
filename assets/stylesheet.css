@@ -48,7 +48,7 @@
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }
-
+  .half.column                    {width: 6%;              }
   .one.column,
   .one.columns                    { width: 8%;             }
   .two.columns                    { width: 16.25%;         }

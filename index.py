@@ -4,7 +4,7 @@ from dash.dependencies import Input, Output
 
 from app import app
 
-from pages import page1, page2, page3, page4, homepage
+from pages import page1, page2, page3, page4, homepage, about
 
 
 
@@ -21,7 +21,7 @@ app.layout = html.Div([
                     html.A('Page2', href='/pages/page2'),
                     html.A('Page3', href='/pages/page3'),
                     html.A('Page4', href='/pages/page4'),
-                    html.A('About', href='#')
+                    html.A('About', href='/pages/about')
                 ])
             ])
         ])
@@ -46,6 +46,8 @@ def display_page(pathname):
         return page4.layout
     elif pathname == '/pages/homepage':
         return homepage.layout
+    elif pathname == '/pages/about':
+        return about.layout
     else:
         return homepage.layout
 

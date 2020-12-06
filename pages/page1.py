@@ -318,7 +318,10 @@ def generate_tierList(platform, skillrank, gamemode, role):
     def getImage(op):
         path = 'assets/' + op + '.png'
         encoded_image = base64.b64encode(open(path, 'rb').read())
-        str = html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')
+        link = "https://www.ubisoft.com/en-us/game/rainbow-six/siege/game-info/operators/" + op.split('-')[1].lower()
+
+        str = html.A([html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), className='opImage')],
+                     href=link, target="_blank")
         return str
 
     for op in rankS_df["operator"]:

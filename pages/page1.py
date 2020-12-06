@@ -344,7 +344,8 @@ def generate_tierList(platform, skillrank, gamemode, role):
         html.Div([
             html.H2('Tier Rank for Operators'),
             html.P('We rank Operators based on their scores.'),
-            html.P("The scores is based on each operator's performance on Win Rate, Kill, Survive, Popularity.")
+            html.P("The scores is based on each operator's performance on Win Rate, Kill, Survive, Popularity."),
+            html.P("Click on each operator's icon to see the official operator instruction page")
         ], className='row', style={'color': 'white', 'text-align': 'center'}),
         html.Div([
             html.Div([

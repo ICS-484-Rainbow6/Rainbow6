@@ -62,3 +62,15 @@ nav ul li a.active,nav ul li a:hover{
     height: 75px;
     padding: 5px
 }
+.unfocused.dash-cell-value {
+    font-size: 15px;
+}
+.column-header-name{
+    font-size: 15px
+}
+.dash-spreadsheet-inner th{
+    text-align: center !important
+}
+.dash-spreadsheet-inner td div.dash-cell-value.cell-markdown{
+    text-align: center !important
+}

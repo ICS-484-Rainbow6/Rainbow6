@@ -11,7 +11,6 @@ from app import combodf
 # ------------------------------------------------------------------------------
 # Import and clean data (importing csv into pandas)
 
-size = 20
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -101,7 +100,7 @@ layout = html.Div([
                          dict(name='Death', id='Death'),
                          ],
                 css=[
-                    dict(selector='img[alt=OperatorIcon]', rule='height: 50px;')
+                    dict(selector='img[alt=OperatorIcon]', rule='height: 50px; padding-left: 10px; padding-right: 10px')
                 ],
                 sort_action='native',
                 style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
@@ -124,6 +123,7 @@ layout = html.Div([
 
 def update_graph(platform, skillrank, gamemode, role, preference):
 
+    size = 20
     # Apply filters
     dff = combodf.copy()
     if platform != "All":
@@ -169,6 +169,8 @@ def update_graph(platform, skillrank, gamemode, role, preference):
 
     rows = result.to_dict('records')
 
+    if len(rows) < size:
+        size = len(rows)
     for i in range(0, size):
         temp_team = rows[i]['Team']
         temp_win = rows[i]['Win Rate %']

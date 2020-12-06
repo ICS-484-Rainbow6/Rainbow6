@@ -118,7 +118,7 @@ layout = html.Div([
                     {"label": "SWAT-THERMITE", "value": "SWAT-THERMITE"}
                 ],
                 multi=False,
-                value='None'
+                value='G.E.O.-JACKAL'
             )
         ], className='two columns', style={'margin-top': '10'})
     ], className='row'),

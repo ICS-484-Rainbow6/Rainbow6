@@ -93,7 +93,7 @@ layout = html.Div([
     }, className='eight columns'),
               html.Div([
                   html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('I am a long long long very very very very long long long long sentence for testing', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('The win rate of an operator minus', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('I am a long long long very very very very long long long long sentence for testing', style={'fontWeight': 'bold', 'color': 'white'})
               ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
@@ -122,6 +122,8 @@ def update_graph(platform, skillrank, gamemode, role):
     dff = df.copy()
     if platform != "All":
         dff = dff[dff["platform"] == platform]
+    else:
+        dff = dff[~dff["operator"].str.contains("RESERVE")]
 
     if skillrank == "Copper & Bronze":
         dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
@@ -142,8 +144,13 @@ def update_graph(platform, skillrank, gamemode, role):
 
     # windelta df
     factor = ["operator"]
-    wdf = dff.groupby(factor).sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
-    wdf["windelta"] = (wdf["haswon"] / wdf["count"] - 0.5) * 100
+    adf = dff.groupby("role").sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
+    adf["avrwinrate"] = adf["haswon"] / adf["count"]
+    adf = adf[["role", "avrwinrate"]]
+
+    wdf = dff.groupby(["role", "operator"]).sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
+    wdf = pd.merge(wdf, adf, on="role", how='outer')
+    wdf["windelta"] = (wdf["haswon"] / wdf["count"] - wdf["avrwinrate"]) * 100
 
 
     # presence df

@@ -93,9 +93,9 @@ layout = html.Div([
     }, className='eight columns'),
               html.Div([
                   html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('The win rate of an operator minus', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('The win rate of an operator minus the average win rate of the operator\'s role (Attacker or Defender). ', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('I am a long long long very very very very long long long long sentence for testing', style={'fontWeight': 'bold', 'color': 'white'})
+                  html.P('The presence rate of an operator in a round. ', style={'fontWeight': 'bold', 'color': 'white'})
               ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
               ], className='row', style={'background': '#2b2b2b'}),
 

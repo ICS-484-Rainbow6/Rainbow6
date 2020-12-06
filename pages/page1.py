@@ -95,7 +95,10 @@ layout = html.Div([
                   html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('The win rate of an operator minus the average win rate of the operator\'s role (Attacker or Defender). ', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('The presence rate of an operator in a round. ', style={'fontWeight': 'bold', 'color': 'white'})
+                  html.P('The presence rate of an operator in a round. The average presence rate of an operator is around 30%. ', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.H6('Four Quadrants:', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('Based on the the win delta rate and the presence rate, most operators are close to the origin. '
+                         'Game designers should pay attention to the outliers. Tachanka may need a rework based on his performance', style={'fontWeight': 'bold', 'color': 'white'})
               ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
               ], className='row', style={'background': '#2b2b2b'}),
 
@@ -172,14 +175,18 @@ def update_graph(platform, skillrank, gamemode, role):
     y = result["windelta"]
     ax.scatter(x, y)
     ax.grid(True)
-    ax.set_xlabel('Presence (in %)')
-    ax.set_ylabel('WinDelta (in %)')
+    ax.set_xlabel('Presence (in %)', size=20)
+    ax.set_ylabel('WinDelta (in %)', size=20)
     fig.set_size_inches(10, 10, forward=True)
     plt.axhline(0, color='red')
     plt.axvline(30, color='red')
     for x0, y0, path in zip(x, y,paths):
         ab = AnnotationBbox(OffsetImage(Image.open('assets/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
         ax.add_artist(ab)
+    ax.text(10, -2, "Underpicked\nToo Weak", ha="center", va="center", size=20, color="green", alpha=0.5)
+    ax.text(10, 2, "Underpicked\nToo Strong", ha="center", va="center", size=20, color="orange", alpha=0.5)
+    ax.text(50, -2, "Overpicked\nToo Weak", ha="center", va="center", size=20, color="blue", alpha=0.5)
+    ax.text(50, 2, "Overpicked\nToo Strong", ha="center", va="center", size=20, color="red", alpha=0.5)
     out_url = fig_to_url(fig)
 
 

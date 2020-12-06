@@ -97,8 +97,8 @@ layout = html.Div([
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('The presence rate of an operator in a round. The average presence rate of an operator is around 30%. ', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Four Quadrants:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('Based on the the win delta rate and the presence rate, most operators are close to the origin. '
-                         'Game designers should pay attention to the outliers. Tachanka may need a rework based on his performance', style={'fontWeight': 'bold', 'color': 'white'})
+                  html.P('Based on the the win delta rate and the presence rate, we divide operators into four quadrants. '
+                         'Game designers should pay attention to the outliers. Tachanka may need a rework based on his performance.', style={'fontWeight': 'bold', 'color': 'white'})
               ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
               ], className='row', style={'background': '#2b2b2b'}),
 

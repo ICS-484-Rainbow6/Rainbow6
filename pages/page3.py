@@ -16,7 +16,7 @@ layout = html.Div([
 
     #title
     html.Div([
-        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
+        html.H1("Operators' Weapons and Capability", style={'font-family': 'Helvetica',
                        "margin-top": "25",
                        "margin-bottom": "0"}, className='eight columns'),
     ], className='row'),

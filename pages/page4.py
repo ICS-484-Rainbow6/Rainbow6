@@ -79,7 +79,7 @@ layout = html.Div([
             dcc.Graph(id='pbr_figure')
         ], className='six columns'),
         html.Div([
-            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.H2('Operator Preference in Different Ranks', style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
 
             html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
@@ -281,7 +281,8 @@ layout = html.Div([
 
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
     ], className='row'),
-
+    html.Hr(),
+    
     # story 4
     # one story, right graph left text
     html.Div([

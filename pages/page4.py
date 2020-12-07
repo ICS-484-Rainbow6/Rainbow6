@@ -1,6 +1,7 @@
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 import dash  # (version 1.12.0) pip install dash
 import dash_core_components as dcc
@@ -241,26 +242,32 @@ layout = html.Div([
             dcc.Graph(id='map_figure')
         ], className='six columns'),
         html.Div([
-            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.H2('Win Rate Difference by Map', style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
 
-            html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
+            html.H6('Win Rate Difference:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('This value is the win rate of attackers minus the win rate of defenders in the same map',
                    style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
 
-            html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('Ash and Jager both have one of the best primary weapons of their roles. '
-                   'Their high movement speed and powerful special skills make them the best picks in their position.',
+            html.H6('Interesting facts:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('1. Defenders have significantly higher win rate in Hostage mode,'
+                   ' especially in low and middle rank games, or in PC platform',
                    style={'fontWeight': 'bold', 'color': 'white'}),
+
+            html.P('2. Attackers have significantly higher win rate in Bomb mode '
+                   'when it\'s in low rank games and in non-PC platform.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
 
             html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-            html.P('Double click on a row of the legend to see the presence curve of that operator.',
-                   style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('* Diamond rank games may contain Platinum players, '
-                   'causing the calculated presence rate slightly different than the actual value.',
+            html.P(['Use the dropdowns as the filter.', html.Br(),
+                    'Red and pink bars means defenders are much stronger in this map.', html.Br(),
+                    'Orange and yellow bars means attackers are much stronger in this map'],
                    style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
+
+
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
     ], className='row'),
 
@@ -285,6 +292,7 @@ def update_graph(platform, gamemode, role):
 
     # Apply filters
     dff = df.copy()
+    dff = dff[~dff["operator"].str.contains("RESERVE")]
     if platform != "All":
         dff = dff[dff["platform"] == platform]
 
@@ -313,7 +321,8 @@ def update_graph(platform, gamemode, role):
     dff = pd.merge(total, dff, on=["skillrank", "role"], how='outer')
 
     dff["presence"] = dff["count"] / dff["total"] * 500
-    fig = px.line(dff, x="skillrank", y="presence", color="operator")
+    fig = px.line(dff, x="skillrank", y="presence", color="operator",
+                  labels=dict(skillrank="Skill Rank", presence="Presence (in %)"))
 
     return fig
 
@@ -334,10 +343,10 @@ def update_graph(platform, gamemode, skillrank, role):
 
     # Apply filters
     dff = df.copy()
+    dff = dff[~dff["operator"].str.contains("RESERVE")]
+
     if platform != "All":
         dff = dff[dff["platform"] == platform]
-    else:
-        dff = dff[~dff["operator"].str.contains("RESERVE")]
 
     if skillrank == "Copper & Bronze":
         dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
@@ -369,7 +378,8 @@ def update_graph(platform, gamemode, skillrank, role):
 
 
 
-    fig = px.bar(wdf, x="secondarygadget", y="windelta")
+    fig = px.bar(wdf, x="secondarygadget", y="windelta",
+                 labels=dict(secondarygadget="Secondary Gadget", windelta="Win Delta (in %)"))
 
     return fig
 
@@ -390,8 +400,6 @@ def update_graph(platform, gamemode, skillrank):
     dff = df.copy()
     if platform != "All":
         dff = dff[dff["platform"] == platform]
-    else:
-        dff = dff[~dff["operator"].str.contains("RESERVE")]
 
     if skillrank == "Copper & Bronze":
         dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
@@ -417,7 +425,20 @@ def update_graph(platform, gamemode, skillrank):
 
     rdf = pd.merge(adf, ddf, on="mapname")
     rdf["windelta"] = rdf["awinrate"] - rdf["dwinrate"]
-    fig = px.bar(rdf, x="mapname", y="windelta")
+
+    rdf["color"] = "red"
+    rdf.loc[rdf["windelta"] > -10, "color"] = "pink"
+    rdf.loc[rdf["windelta"] > -5, "color"] = "#636EFA"
+    rdf.loc[rdf["windelta"] > 5, "color"] = "#FECB52"
+    rdf.loc[rdf["windelta"] > 10, "color"] = "#FBE426"
+    print(rdf)
+
+
+    fig = go.Figure(go.Bar(x=rdf["mapname"], y=rdf["windelta"], marker={'color': rdf['color']}))
+    fig.update_layout(
+        xaxis_title="Map Name",
+        yaxis_title="Win Rate Difference (in %)")
+
     return fig
 
 

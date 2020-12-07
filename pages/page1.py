@@ -93,12 +93,18 @@ layout = html.Div([
     }, className='eight columns'),
               html.Div([
                   html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('The win rate of an operator minus the average win rate of the operator\'s role (Attacker or Defender). ', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('The win rate of an operator minus the average win rate of the operator\'s role'
+                         ' (Attacker or Defender). ', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('The presence rate of an operator in a round. The average presence rate of an operator is around 30%. ', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.P('The presence rate of an operator in a round.'
+                         ' The average presence rate of an operator is around 30%. ',
+                         style={'fontWeight': 'bold', 'color': 'white'}),
                   html.H6('Four Quadrants:', style={'fontWeight': 'bold', 'color': 'white'}),
-                  html.P('Based on the the win delta rate and the presence rate, we divide operators into four quadrants. '
-                         'Game designers should pay attention to the outliers. Tachanka may need a rework based on his performance.', style={'fontWeight': 'bold', 'color': 'white'})
+                  html.P('Based on the the win delta rate and the presence rate,'
+                         ' we divide operators into four quadrants. '
+                         'Game designers should pay attention to the outliers. '
+                         'Tachanka may need a rework based on his performance. (He got a rework recently.)',
+                         style={'fontWeight': 'bold', 'color': 'white'})
               ], className='five columns', style={'padding-left':'5px', 'padding-top': '15px'})
               ], className='row', style={'background': '#2b2b2b'}),
 
@@ -123,10 +129,9 @@ def update_graph(platform, skillrank, gamemode, role):
 
     # Apply filters
     dff = df.copy()
+    dff = dff[~dff["operator"].str.contains("RESERVE")]
     if platform != "All":
         dff = dff[dff["platform"] == platform]
-    else:
-        dff = dff[~dff["operator"].str.contains("RESERVE")]
 
     if skillrank == "Copper & Bronze":
         dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
@@ -140,9 +145,6 @@ def update_graph(platform, skillrank, gamemode, role):
 
     if role != "All":
         dff = dff[dff["role"] == role]
-
-
-
 
 
     # windelta df

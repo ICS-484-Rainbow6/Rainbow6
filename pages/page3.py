@@ -196,7 +196,9 @@ def generate_table(platform_selected, rank_selected, map_selected, operator_sele
         tempNum = 0
         for each in table_data['count']:
             tempNum += each
+
         # print(tempNum)
+
         table_data['Presence Rate%'] = round((table_data['count'] / tempNum)*100, 3)
         factor7 = [("Primary"), ("Secondary")]
 

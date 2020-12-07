@@ -98,10 +98,9 @@ layout = html.Div([
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
     ], className='row'),
 
-    # html.Div(style={'padding-bottom': '20px'}),
 
     # story 2
-    # one story, left graph right text
+    # one story, right graph left text
     html.Div([
         html.Div([
             html.H2('Secondary Gadget Picks To Win Rate',
@@ -190,6 +189,80 @@ layout = html.Div([
         ], className='six columns')
     ], className='row'),
 
+    # story 3
+    # one story, left graph right text
+    html.Div([
+        # dropdown and figure
+        html.Div([
+            # dropdowns
+            html.Div([
+
+                html.Div([
+                    html.P("Platform:"),
+                    dcc.Dropdown(
+                        id="platform_select3",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "PC", "value": "PC"},
+                            {"label": "PS4", "value": "PS4"},
+                            {"label": "XONE", "value": "XONE"}],
+                        multi=False,
+                        value="All",
+                    )], className='four columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Game Mode:"),
+                    dcc.Dropdown(
+                        id="gamemode_select3",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Bomb", "value": "BOMB"},
+                            {"label": "Secure", "value": "SECURE"},
+                            {"label": "Hostage", "value": "HOSTAGE"}],
+                        multi=False,
+                        value="All",
+                    )], className='four columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Rank:"),
+                    dcc.Dropdown(
+                        id="skillrank_select3",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Copper & Bronze", "value": "Copper & Bronze"},
+                            {"label": "Silver & Gold", "value": "Silver & Gold"},
+                            {"label": "Platinum+", "value": "Platinum+"}],
+                        multi=False,
+                        value="All",
+                    )], className='three columns', style={'margin-top': '10'}),
+
+            ], className='row', style={'padding': '10px'}),
+            # end of dropdown
+            dcc.Graph(id='map_figure')
+        ], className='six columns'),
+        html.Div([
+            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+
+            html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+
+            html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Ash and Jager both have one of the best primary weapons of their roles. '
+                   'Their high movement speed and powerful special skills make them the best picks in their position.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+
+            html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
+            html.P('Double click on a row of the legend to see the presence curve of that operator.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('* Diamond rank games may contain Platinum players, '
+                   'causing the calculated presence rate slightly different than the actual value.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+        ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
+    ], className='row'),
 
 
 
@@ -291,7 +364,7 @@ def update_graph(platform, gamemode, skillrank, role):
 
     wdf = dff.groupby(["role", "secondarygadget"]).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
     wdf = pd.merge(wdf, adf, on="role", how='outer')
-    print(wdf)
+
     wdf["windelta"] = (wdf["haswon"] / wdf["count"] - wdf["avrwinrate"]) * 100
 
 
@@ -301,6 +374,51 @@ def update_graph(platform, gamemode, skillrank, role):
     return fig
 
 
+# ------------------------------------------------------------------------------
+# Connect the Plotly graphs with Dash Components
+# call back of figure #3
+@app.callback(
+
+    Output(component_id='map_figure', component_property='figure'),
+    [Input(component_id='platform_select3', component_property='value'),
+     Input(component_id='gamemode_select3', component_property='value'),
+     Input(component_id='skillrank_select3', component_property='value')]
+)
+
+def update_graph(platform, gamemode, skillrank):
+    # Apply filters
+    dff = df.copy()
+    if platform != "All":
+        dff = dff[dff["platform"] == platform]
+    else:
+        dff = dff[~dff["operator"].str.contains("RESERVE")]
+
+    if skillrank == "Copper & Bronze":
+        dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+    if skillrank == "Silver & Gold":
+        dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
+    if skillrank == "Platinum+":
+        dff = dff[(dff["skillrank"] == "Platinum") | (dff["skillrank"] == "Diamond")]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+
+    # calculation
+    dff = dff.groupby(["mapname", "role"]).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
+    dff["winrate"] = dff["haswon"] / dff["count"] * 100
+    adf = dff[dff["role"] == "Attacker"].apply(lambda x: x)
+    adf.rename(columns={"winrate": "awinrate"}, inplace=True)
+    adf = adf[["mapname", "awinrate"]]
+
+    ddf = dff[dff["role"] == "Defender"].apply(lambda x: x)
+    ddf.rename(columns={"winrate": "dwinrate"}, inplace=True)
+    ddf = ddf[["mapname", "dwinrate"]]
+
+    rdf = pd.merge(adf, ddf, on="mapname")
+    rdf["windelta"] = rdf["awinrate"] - rdf["dwinrate"]
+    fig = px.bar(rdf, x="mapname", y="windelta")
+    return fig
 
 
 # ------------------------------------------------------------------------------

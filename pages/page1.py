@@ -181,18 +181,18 @@ def update_graph(platform, skillrank, gamemode, role):
     y = result["windelta"]
     ax.scatter(x, y)
     ax.grid(True)
-    ax.set_xlabel('Presence (in %)', size=20)
-    ax.set_ylabel('WinDelta (in %)', size=20)
-    fig.set_size_inches(10, 10, forward=True)
+    ax.set_xlabel('Presence (in %)', size=30)
+    ax.set_ylabel('WinDelta (in %)', size=30)
+    fig.set_size_inches(15, 15, forward=True)
     plt.axhline(0, color='red')
     plt.axvline(30, color='red')
-    for x0, y0, path in zip(x, y,paths):
-        ab = AnnotationBbox(OffsetImage(Image.open('assets/' + path + '.png').resize((32,32))), (x0, y0), frameon=False)
+    for x0, y0, path in zip(x, y, paths):
+        ab = AnnotationBbox(OffsetImage(Image.open('assets/' + path + '.png').resize((50,50))), (x0, y0), frameon=False)
         ax.add_artist(ab)
-    ax.text(10, -2, "Underpicked\nToo Weak", ha="center", va="center", size=20, color="green", alpha=0.5)
-    ax.text(10, 2, "Underpicked\nToo Strong", ha="center", va="center", size=20, color="orange", alpha=0.5)
-    ax.text(50, -2, "Overpicked\nToo Weak", ha="center", va="center", size=20, color="blue", alpha=0.5)
-    ax.text(50, 2, "Overpicked\nToo Strong", ha="center", va="center", size=20, color="red", alpha=0.5)
+    ax.text(10, -2, "Underpicked\nToo Weak", ha="center", va="center", size=30, color="green", alpha=0.5)
+    ax.text(10, 2, "Underpicked\nToo Strong", ha="center", va="center", size=30, color="orange", alpha=0.5)
+    ax.text(50, -2, "Overpicked\nToo Weak", ha="center", va="center", size=30, color="blue", alpha=0.5)
+    ax.text(50, 2, "Overpicked\nToo Strong", ha="center", va="center", size=30, color="red", alpha=0.5)
     out_url = fig_to_url(fig)
 
 

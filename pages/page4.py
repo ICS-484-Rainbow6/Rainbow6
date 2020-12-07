@@ -34,7 +34,7 @@ layout = html.Div([
             html.Div([
 
                 html.Div([
-                    html.P("Platform:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Platform:"),
                     dcc.Dropdown(
                         id="platform_select",
                         options=[
@@ -47,7 +47,7 @@ layout = html.Div([
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
-                    html.P("Game Mode:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Game Mode:"),
                     dcc.Dropdown(
                         id="gamemode_select",
                         options=[
@@ -60,7 +60,7 @@ layout = html.Div([
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
-                    html.P("Role:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Role:"),
                     dcc.Dropdown(
                         id="role_select",
                         options=[
@@ -75,11 +75,13 @@ layout = html.Div([
             dcc.Graph(id='pbr_figure')
         ], className='six columns'),
         html.Div([
-            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white',
-                                                                     'padding-bottom': '20px'}),
+            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+
             html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
             html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
                    style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
 
             html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
             html.P('Ash and Jager both have one of the best primary weapons of their roles. '
@@ -91,34 +93,39 @@ layout = html.Div([
                    style={'fontWeight': 'bold', 'color': 'white'}),
             html.P('* Diamond rank games may contain Platinum players, '
                    'causing the calculated presence rate slightly different than the actual value.',
-                   style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-        ], className='six columns', style={'padding-left': '5px', 'padding-top': '15px'})
-    ], className='row', style={'background': '#2b2b2b'}),
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+        ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
+    ], className='row'),
 
-    html.Div(style={'padding-bottom': '20px'}),
+    # html.Div(style={'padding-bottom': '20px'}),
 
     # story 2
     # one story, left graph right text
     html.Div([
         html.Div([
             html.H2('Secondary Gadget Picks To Win Rate',
-                    style={'fontWeight': 'bold', 'color': 'white', 'padding-bottom': '20px'}),
-            html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
+                    style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+            html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('The win rate of operators who carry this secondary gadget minus the average win rate of the operators\' role.',
                    style={'fontWeight': 'bold', 'color': 'white'}),
-
-            html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('Ash and Jager both have one of the best primary weapons of their roles. '
-                   'Their high movement speed and powerful special skills make them the best picks in their position.',
+            html.P('* This value may be affected by the win rate of the operators',
                    style={'fontWeight': 'bold', 'color': 'white'}),
-
+            html.Div(style={'padding-bottom': '20px'}),
+            html.H6('Interesting Facts:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Barbed wire seems to be the best secondary gadget for defenders.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Impact grenade are more helpful in Bomb Mode because they can be used to connect two targets',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
             html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-            html.P('Double click on a row of the legend to see the presence curve of that operator.',
+            html.P('Use the dropdowns as the filter.',
                    style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('* Diamond rank games may contain Platinum players, '
-                   'causing the calculated presence rate slightly different than the actual value.',
-                   style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-        ], className='six columns', style={'padding-left':'5px', 'padding-top': '15px'}),
+            html.P('** Attackers and defenders have completely different secondary gadget options',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+        ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'}),
 
         # dropdowns and graph
         html.Div([
@@ -126,7 +133,7 @@ layout = html.Div([
             html.Div([
 
                 html.Div([
-                    html.P("Platform:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Platform:"),
                     dcc.Dropdown(
                         id="platform_select2",
                         options=[
@@ -139,7 +146,7 @@ layout = html.Div([
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
-                    html.P("Game Mode:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Game Mode:"),
                     dcc.Dropdown(
                         id="gamemode_select2",
                         options=[
@@ -152,7 +159,7 @@ layout = html.Div([
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
-                    html.P("Rank:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Rank:"),
                     dcc.Dropdown(
                         id="skillrank_select2",
                         options=[
@@ -165,7 +172,7 @@ layout = html.Div([
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
-                    html.P("Role:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    html.P("Role:"),
                     dcc.Dropdown(
                         id="role_select2",
                         options=[
@@ -176,12 +183,12 @@ layout = html.Div([
                         value="All",
                     )], className='three columns', style={'margin-top': '10'})
 
-            ], className='row', style={'padding': '10px'}),
+            ], className='row', style={'padding': '20px'}),
             # end of dropdown
             dcc.Graph(id='sg_figure')
 
         ], className='six columns')
-    ], className='row', style={'background': '#2b2b2b'}),
+    ], className='row'),
 
 
 

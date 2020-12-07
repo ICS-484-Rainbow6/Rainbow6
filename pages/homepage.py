@@ -16,6 +16,6 @@ layout = html.Div([
         html.P('and find more interesting ideas to punish your opponent in each game.'),
 
     ], style={'padding': '25px'}),
-    html.A('User Guide', href='/pages/page1', className='button', style={'margin': '18px', 'color': 'white'})
+    html.A('User Guide', href='/pages/userguide', className='button', style={'margin': '18px', 'color': 'white'})
 ], className='four columns',
     style={'background': 'rgba(43, 43, 43, 0.5)', 'color': 'white', 'margin-top': '200px', 'margin-left': '300px'})

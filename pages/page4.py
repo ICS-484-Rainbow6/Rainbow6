@@ -430,7 +430,7 @@ def update_graph(platform, gamemode, role):
     dff = pd.merge(total, dff, on=["skillrank", "role"], how='outer')
 
     dff["presence"] = dff["count"] / dff["total"] * 500
-    fig = px.line(dff, x="skillrank", y="presence", color="operator",
+    fig = px.line(dff, x="skillrank", y="presence", color="operator", title="Operator Preference in Different Ranks",
                   labels=dict(skillrank="Skill Rank", presence="Presence (in %)"))
 
     return fig
@@ -487,7 +487,7 @@ def update_graph(platform, gamemode, skillrank, role):
 
 
 
-    fig = px.bar(wdf, x="secondarygadget", y="windelta",
+    fig = px.bar(wdf, x="secondarygadget", y="windelta", title="Secondary Gadget Picks To Win Rate",
                  labels=dict(secondarygadget="Secondary Gadget", windelta="Win Delta (in %)"))
 
     return fig
@@ -559,6 +559,7 @@ def update_graph(platform, gamemode, skillrank):
 
 
     fig.update_layout(
+        title='Win Rate Difference by Map',
         xaxis_title="Map Name",
         yaxis_title="Win Rate Difference (in %)")
     fig.update_layout(showlegend=True)
@@ -619,7 +620,9 @@ def update_graph(platform, gamemode, skillrank, part):
             x=wdf[wdf[part] == x]["primaryweapontype"],
             y=wdf[wdf[part] == x]["windelta"],
         ))
+    title = "Primary Weapon " + part.split('primary')[1].capitalize() + "s To Win Rate"
     fig.update_layout(
+        title=title,
         xaxis_title="Primary Weapon Type",
         yaxis_title="Win Delta (in %)")
     return fig

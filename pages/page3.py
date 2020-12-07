@@ -33,7 +33,8 @@ layout = html.Div([
                     {"label": "XONE", "value": "XONE"}
                 ],
                 multi=False,
-                value='None'
+                value='None',
+                clearable=False,
             )
             ], className='two columns', style={'margin-top': '10'}),
         html.Div([
@@ -51,7 +52,8 @@ layout = html.Div([
                     {"label": "Diamond", "value": "Diamond"}
                 ],
                 multi=False,
-                value='None'
+                value='None',
+                clearable=False,
             )
         ], className='two columns', style={'margin-top': '10'}),
         html.Div([
@@ -78,7 +80,8 @@ layout = html.Div([
                     {"label": "YACHT", "value": "YACHT"}
                 ],
                 multi=False,
-                value='None'
+                value='None',
+                clearable=False,
             )
         ], className='two columns', style={'margin-top': '10'}),
         html.Div([
@@ -118,7 +121,8 @@ layout = html.Div([
                     {"label": "SWAT-THERMITE", "value": "SWAT-THERMITE"}
                 ],
                 multi=False,
-                value='G.E.O.-JACKAL'
+                value='G.E.O.-JACKAL',
+                clearable=False,
             )
         ], className='two columns', style={'margin-top': '10'})
     ], className='row'),

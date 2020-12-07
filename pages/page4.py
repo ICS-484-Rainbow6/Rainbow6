@@ -286,25 +286,28 @@ layout = html.Div([
     # one story, right graph left text
     html.Div([
         html.Div([
-            html.H2('Secondary Gadget Picks To Win Rate',
+            html.H2('Primary Weapon Parts To Win Rate',
                     style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
             html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('The win rate of operators who carry this secondary gadget minus the average win rate of the operators\' role.',
+            html.P('The win rate of a primary weapon type with this part minus the average win rate of this weapon type.',
                    style={'fontWeight': 'bold', 'color': 'white'}),
             html.P('* This value may be affected by the win rate of the operators',
                    style={'fontWeight': 'bold', 'color': 'white'}),
+
             html.Div(style={'padding-bottom': '20px'}),
             html.H6('Interesting Facts:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('Barbed wire seems to be the best secondary gadget for defenders.',
+            html.P(['1. Among the barrel options, suppressors seem bad because they reduce weapon damages.', html.Br(),
+                    '2. Marksman rifles with laser sights seem bad.', html.Br(),
+                    '3. It\'s a bad idea not to choose sights for middle to long range weapons.'
+
+                    ],
                    style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('Impact grenade are more helpful in Bomb Mode because they can be used to connect two targets',
-                   style={'fontWeight': 'bold', 'color': 'white'}),
+
             html.Div(style={'padding-bottom': '20px'}),
+
             html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-            html.P('Use the dropdowns as the filter.',
-                   style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('** Attackers and defenders have completely different secondary gadget options',
+            html.P('Use the dropdowns as the filter. You can check different part types, such as grips and underbarrels',
                    style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'}),
@@ -615,7 +618,9 @@ def update_graph(platform, gamemode, skillrank, part):
             x=wdf[wdf[part] == x]["primaryweapontype"],
             y=wdf[wdf[part] == x]["windelta"],
         ))
-
+    fig.update_layout(
+        xaxis_title="Primary Weapon Type",
+        yaxis_title="Win Delta (in %)")
     return fig
 
 

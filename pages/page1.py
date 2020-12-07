@@ -42,6 +42,7 @@ layout = html.Div([
                     {"label": "XONE", "value": "XONE"}],
                 multi=False,
                 value="All",
+                clearable=False,
             )], className='two columns', style={'margin-top': '10'}),
 
         html.Div([
@@ -55,6 +56,7 @@ layout = html.Div([
                     {"label": "Platinum+", "value": "Platinum+"}],
                 multi=False,
                 value="All",
+                clearable=False,
             )], className='two columns', style={'margin-top': '10'}),
 
         html.Div([
@@ -68,6 +70,7 @@ layout = html.Div([
                     {"label": "Hostage", "value": "HOSTAGE"}],
                 multi=False,
                 value="All",
+                clearable=False,
             )], className='two columns', style={'margin-top': '10'}),
 
 
@@ -81,6 +84,7 @@ layout = html.Div([
                     {"label": "Defender", "value": "Defender"}],
                 multi=False,
                 value="All",
+                clearable=False,
             )], className='two columns', style={'margin-top': '10'})
     ], className='row', style={'padding-bottom': '20px'}),
 

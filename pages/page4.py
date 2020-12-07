@@ -19,15 +19,16 @@ from app import df
 layout = html.Div([
 
     html.Div([
-        html.H1("Some statistical facts that may interest you", style={'font-family': 'Helvetica',
+        html.H1("Some Statistical Facts That May Interest You", style={'font-family': 'Helvetica',
                                                                        "margin-top": "25",
-                                                                       "margin-bottom": "0"}, className='eight columns'),
+                                                                       "margin-bottom": "20"}, className='eight columns'),
     ], className='row'),
 
 
     html.Div([
         html.Div([
             html.Div([
+
                 html.Div([
                     html.P("Platform:", style={'fontWeight': 'bold', 'color': 'white'}),
                     dcc.Dropdown(
@@ -88,6 +89,7 @@ layout = html.Div([
 
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
+# call back of figure #1
 @app.callback(
 
     Output(component_id='pbr_figure', component_property='figure'),

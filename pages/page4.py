@@ -25,7 +25,7 @@ layout = html.Div([
                        "margin-top": "25",
                        "margin-bottom": "20"}, className='eight columns'),
     ], className='row'),
-
+    html.Hr(),
     # story 1
     # one story, left graph right text
     html.Div([
@@ -98,7 +98,7 @@ layout = html.Div([
             html.Div(style={'padding-bottom': '20px'}),
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
     ], className='row'),
-
+    html.Hr(),
 
     # story 2
     # one story, right graph left text
@@ -189,6 +189,7 @@ layout = html.Div([
 
         ], className='six columns')
     ], className='row'),
+    html.Hr(),
 
     # story 3
     # one story, left graph right text
@@ -425,19 +426,33 @@ def update_graph(platform, gamemode, skillrank):
 
     rdf = pd.merge(adf, ddf, on="mapname")
     rdf["windelta"] = rdf["awinrate"] - rdf["dwinrate"]
+    rdf = rdf.sort_values('windelta', ascending=[False])
+    fig = go.Figure()
 
-    rdf["color"] = "red"
-    rdf.loc[rdf["windelta"] > -10, "color"] = "pink"
-    rdf.loc[rdf["windelta"] > -5, "color"] = "#636EFA"
-    rdf.loc[rdf["windelta"] > 5, "color"] = "#FECB52"
-    rdf.loc[rdf["windelta"] > 10, "color"] = "#FBE426"
-    print(rdf)
+    fig.add_trace(go.Bar(name='greater than 10', x=rdf[rdf["windelta"] >= 10]["mapname"],
+                         y=rdf[rdf["windelta"] >= 10]["windelta"],
+                         marker={'color': "#FBE426"}))
+
+    fig.add_trace(go.Bar(name='5 to 10', x=rdf[(rdf["windelta"] > 5) & (rdf["windelta"] <= 10)]["mapname"],
+                         y=rdf[(rdf["windelta"] > 5) & (rdf["windelta"] <= 10)]["windelta"],
+                         marker={'color': "#FECB52"}))
+
+    fig.add_trace(go.Bar(name='-5 to 5', x=rdf[(rdf["windelta"] > -5) & (rdf["windelta"] <= 5)]["mapname"],
+                         y=rdf[(rdf["windelta"] > -5) & (rdf["windelta"] <= 5)]["windelta"],
+                         marker={'color': "#636EFA"}))
+    fig.add_trace(go.Bar(name='-10 to -5', x=rdf[(rdf["windelta"] > -10) & (rdf["windelta"] <= -5)]["mapname"],
+                         y=rdf[(rdf["windelta"] > -10) & (rdf["windelta"] <= -5)]["windelta"],
+                         marker={'color': "pink"}))
+
+    fig.add_trace(go.Bar(name='less than -10', x=rdf[rdf["windelta"] <= -10]["mapname"],
+                         y=rdf[rdf["windelta"] <= -10]["windelta"],
+                         marker={'color': "red"}))
 
 
-    fig = go.Figure(go.Bar(x=rdf["mapname"], y=rdf["windelta"], marker={'color': rdf['color']}))
     fig.update_layout(
         xaxis_title="Map Name",
         yaxis_title="Win Rate Difference (in %)")
+    fig.update_layout(showlegend=True)
 
     return fig
 

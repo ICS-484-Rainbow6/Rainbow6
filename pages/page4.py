@@ -19,14 +19,18 @@ from app import df
 layout = html.Div([
 
     html.Div([
-        html.H1("Some Statistical Facts That May Interest You", style={'font-family': 'Helvetica',
-                                                                       "margin-top": "25",
-                                                                       "margin-bottom": "20"}, className='eight columns'),
+        html.H1("Some Statistical Facts That May Interest You",
+                style={'font-family': 'Helvetica',
+                       "margin-top": "25",
+                       "margin-bottom": "20"}, className='eight columns'),
     ], className='row'),
 
-
+    # story 1
+    # one story, left graph right text
     html.Div([
+        # dropdown and figure
         html.Div([
+            # dropdowns
             html.Div([
 
                 html.Div([
@@ -67,21 +71,120 @@ layout = html.Div([
                         value="All",
                     )], className='four columns', style={'margin-top': '10'})
             ], className='row', style={'padding': '10px'}),
+            # end of dropdown
             dcc.Graph(id='pbr_figure')
         ], className='six columns'),
         html.Div([
-            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white', 'padding-bottom': '20px'}),
+            html.H2('Operator preference in different ranks', style={'fontWeight': 'bold', 'color': 'white',
+                                                                     'padding-bottom': '20px'}),
             html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
 
             html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('Ash and Jager both have one of the best primary weapons of their roles. Their high movement speed and powerful special skills make them the best picks in their position.', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Ash and Jager both have one of the best primary weapons of their roles. '
+                   'Their high movement speed and powerful special skills make them the best picks in their position.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
 
             html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-            html.P('Double click on a row of the legend to see the presence curve of that operator.', style={'fontWeight': 'bold', 'color': 'white'}),
-            html.P('* Diamond rank games may contain Platinum players, causing the calculated presence rate slightly different than the actual value.', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
-        ], className='six columns', style={'padding-left':'5px', 'padding-top': '15px'})
+            html.P('Double click on a row of the legend to see the presence curve of that operator.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('* Diamond rank games may contain Platinum players, '
+                   'causing the calculated presence rate slightly different than the actual value.',
+                   style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
+        ], className='six columns', style={'padding-left': '5px', 'padding-top': '15px'})
     ], className='row', style={'background': '#2b2b2b'}),
+
+    html.Div(style={'padding-bottom': '20px'}),
+
+    # story 2
+    # one story, left graph right text
+    html.Div([
+        html.Div([
+            html.H2('Secondary Gadget Picks To Win Rate',
+                    style={'fontWeight': 'bold', 'color': 'white', 'padding-bottom': '20px'}),
+            html.H6('Interesting fact:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('The result shows that players in higher ranks prefer Ash and Jager than other operators.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+
+            html.H6('Possible reason:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Ash and Jager both have one of the best primary weapons of their roles. '
+                   'Their high movement speed and powerful special skills make them the best picks in their position.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+
+            html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
+            html.P('Double click on a row of the legend to see the presence curve of that operator.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('* Diamond rank games may contain Platinum players, '
+                   'causing the calculated presence rate slightly different than the actual value.',
+                   style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
+        ], className='six columns', style={'padding-left':'5px', 'padding-top': '15px'}),
+
+        # dropdowns and graph
+        html.Div([
+            # dropdowns
+            html.Div([
+
+                html.Div([
+                    html.P("Platform:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    dcc.Dropdown(
+                        id="platform_select2",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "PC", "value": "PC"},
+                            {"label": "PS4", "value": "PS4"},
+                            {"label": "XONE", "value": "XONE"}],
+                        multi=False,
+                        value="All",
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Game Mode:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    dcc.Dropdown(
+                        id="gamemode_select2",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Bomb", "value": "BOMB"},
+                            {"label": "Secure", "value": "SECURE"},
+                            {"label": "Hostage", "value": "HOSTAGE"}],
+                        multi=False,
+                        value="All",
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Rank:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    dcc.Dropdown(
+                        id="skillrank_select2",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Copper & Bronze", "value": "Copper & Bronze"},
+                            {"label": "Silver & Gold", "value": "Silver & Gold"},
+                            {"label": "Platinum+", "value": "Platinum+"}],
+                        multi=False,
+                        value="All",
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Role:", style={'fontWeight': 'bold', 'color': 'white'}),
+                    dcc.Dropdown(
+                        id="role_select2",
+                        options=[
+                            {"label": "Both", "value": "All"},
+                            {"label": "Attacker", "value": "Attacker"},
+                            {"label": "Defender", "value": "Defender"}],
+                        multi=False,
+                        value="All",
+                    )], className='three columns', style={'margin-top': '10'})
+
+            ], className='row', style={'padding': '10px'}),
+            # end of dropdown
+            dcc.Graph(id='sg_figure')
+
+        ], className='six columns')
+    ], className='row', style={'background': '#2b2b2b'}),
+
+
+
 
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
@@ -133,6 +236,65 @@ def update_graph(platform, gamemode, role):
     fig = px.line(dff, x="skillrank", y="presence", color="operator")
 
     return fig
+
+
+# ------------------------------------------------------------------------------
+# Connect the Plotly graphs with Dash Components
+# call back of figure #2
+@app.callback(
+
+    Output(component_id='sg_figure', component_property='figure'),
+    [Input(component_id='platform_select2', component_property='value'),
+     Input(component_id='gamemode_select2', component_property='value'),
+     Input(component_id='skillrank_select2', component_property='value'),
+     Input(component_id='role_select2', component_property='value')]
+)
+
+def update_graph(platform, gamemode, skillrank, role):
+
+    # Apply filters
+    dff = df.copy()
+    if platform != "All":
+        dff = dff[dff["platform"] == platform]
+    else:
+        dff = dff[~dff["operator"].str.contains("RESERVE")]
+
+    if skillrank == "Copper & Bronze":
+        dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+    if skillrank == "Silver & Gold":
+        dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
+    if skillrank == "Platinum+":
+        dff = dff[(dff["skillrank"] == "Platinum") | (dff["skillrank"] == "Diamond")]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+    if role != "All":
+        dff = dff[dff["role"] == role]
+
+    # remove impossible role & secondary gadget combination
+    dff = dff[~((dff["role"] == "Attacker") & (dff["secondarygadget"] == "IMPACT GRENADE"))]
+    dff = dff[~((dff["role"] == "Attacker") & (dff["secondarygadget"] == "NITRO CELL"))]
+    dff = dff[~((dff["role"] == "Defender") & (dff["secondarygadget"] == "FRAG GRENADE"))]
+    dff = dff[~((dff["role"] == "Defender") & (dff["secondarygadget"] == "STUN GRENADE"))]
+
+    adf = dff.groupby("role").sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
+    adf["avrwinrate"] = adf["haswon"] / adf["count"]
+    adf = adf[["role", "avrwinrate"]]
+
+    wdf = dff.groupby(["role", "secondarygadget"]).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
+    wdf = pd.merge(wdf, adf, on="role", how='outer')
+    print(wdf)
+    wdf["windelta"] = (wdf["haswon"] / wdf["count"] - wdf["avrwinrate"]) * 100
+
+
+
+    fig = px.bar(wdf, x="secondarygadget", y="windelta")
+
+    return fig
+
+
+
 
 # ------------------------------------------------------------------------------
 # other functions

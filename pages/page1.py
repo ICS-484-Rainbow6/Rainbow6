@@ -99,10 +99,12 @@ layout = html.Div([
                   html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('The win rate of an operator minus the average win rate of the operator\'s role'
                          ' (Attacker or Defender). ', style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.Div(style={'padding-bottom': '20px'}),
                   html.H6('Presence:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('The presence rate of an operator in a round.'
                          ' The average presence rate of an operator is around 30%. ',
                          style={'fontWeight': 'bold', 'color': 'white'}),
+                  html.Div(style={'padding-bottom': '20px'}),
                   html.H6('Four Quadrants:', style={'fontWeight': 'bold', 'color': 'white'}),
                   html.P('Based on the the win delta rate and the presence rate,'
                          ' we divide operators into four quadrants. '

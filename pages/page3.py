@@ -196,14 +196,14 @@ def generate_table(platform_selected, rank_selected, map_selected, operator_sele
         tempNum = 0
         for each in table_data['count']:
             tempNum += each
-        print(tempNum)
+        # print(tempNum)
         table_data['Presence Rate%'] = round((table_data['count'] / tempNum)*100, 3)
         factor7 = [("Primary"), ("Secondary")]
 
         res = table_data.groupby(factor7).sum()[["Win Rate%", "Presence Rate%", "Kill", "Dead"]].apply(lambda x: x).reset_index()
 
         rows = res.to_dict('records')
-        print(rows)
+        # print(rows)
         return rows
 
     else:
@@ -359,8 +359,8 @@ def generate_abgraph(platform_selected, rank_selected, map_selected, operator_se
         dead_score = dead_rank/3
         win_score = win_rank/3
         popularity_score = popularity_rank/3
-        print("there is test for score: \n")
-        print(kill_score, dead_score,win_score,popularity_score)
+        # print("there is test for score: \n")
+        # print(kill_score, dead_score,win_score,popularity_score)
 
 
         #generate graph

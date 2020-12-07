@@ -9,7 +9,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from app import app
-from app import df
+from app import df, weapondf
 
 # ------------------------------------------------------------------------------
 # Import
@@ -45,6 +45,7 @@ layout = html.Div([
                             {"label": "XONE", "value": "XONE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -58,6 +59,7 @@ layout = html.Div([
                             {"label": "Hostage", "value": "HOSTAGE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -70,6 +72,7 @@ layout = html.Div([
                             {"label": "Defender", "value": "Defender"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='four columns', style={'margin-top': '10'})
             ], className='row', style={'padding': '10px'}),
             # end of dropdown
@@ -143,6 +146,7 @@ layout = html.Div([
                             {"label": "XONE", "value": "XONE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -156,6 +160,7 @@ layout = html.Div([
                             {"label": "Hostage", "value": "HOSTAGE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -169,6 +174,7 @@ layout = html.Div([
                             {"label": "Platinum+", "value": "Platinum+"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='three columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -181,6 +187,7 @@ layout = html.Div([
                             {"label": "Defender", "value": "Defender"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='three columns', style={'margin-top': '10'})
 
             ], className='row', style={'padding': '20px'}),
@@ -210,6 +217,7 @@ layout = html.Div([
                             {"label": "XONE", "value": "XONE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -223,6 +231,7 @@ layout = html.Div([
                             {"label": "Hostage", "value": "HOSTAGE"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='four columns', style={'margin-top': '10'}),
 
                 html.Div([
@@ -236,6 +245,7 @@ layout = html.Div([
                             {"label": "Platinum+", "value": "Platinum+"}],
                         multi=False,
                         value="All",
+                        clearable=False,
                     )], className='three columns', style={'margin-top': '10'}),
 
             ], className='row', style={'padding': '10px'}),
@@ -272,7 +282,101 @@ layout = html.Div([
         ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'})
     ], className='row'),
 
+    # story 4
+    # one story, right graph left text
+    html.Div([
+        html.Div([
+            html.H2('Secondary Gadget Picks To Win Rate',
+                    style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+            html.H6('Win Delta:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('The win rate of operators who carry this secondary gadget minus the average win rate of the operators\' role.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('* This value may be affected by the win rate of the operators',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+            html.H6('Interesting Facts:', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Barbed wire seems to be the best secondary gadget for defenders.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('Impact grenade are more helpful in Bomb Mode because they can be used to connect two targets',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+            html.H6('How to use the graph:', style={'fontWeight': 'bold', 'color': 'white', 'padding-top': '20px'}),
+            html.P('Use the dropdowns as the filter.',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.P('** Attackers and defenders have completely different secondary gadget options',
+                   style={'fontWeight': 'bold', 'color': 'white'}),
+            html.Div(style={'padding-bottom': '20px'}),
+        ], className='six columns', style={'padding-left': '15px', 'padding-top': '15px', 'background': '#2b2b2b'}),
 
+        # dropdowns and graph
+        html.Div([
+            # dropdowns
+            html.Div([
+
+                html.Div([
+                    html.P("Platform:"),
+                    dcc.Dropdown(
+                        id="platform_select4",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "PC", "value": "PC"},
+                            {"label": "PS4", "value": "PS4"},
+                            {"label": "XONE", "value": "XONE"}],
+                        multi=False,
+                        value="All",
+                        clearable=False,
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Game Mode:"),
+                    dcc.Dropdown(
+                        id="gamemode_select4",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Bomb", "value": "BOMB"},
+                            {"label": "Secure", "value": "SECURE"},
+                            {"label": "Hostage", "value": "HOSTAGE"}],
+                        multi=False,
+                        value="All",
+                        clearable=False,
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Rank:"),
+                    dcc.Dropdown(
+                        id="skillrank_select4",
+                        options=[
+                            {"label": "All", "value": "All"},
+                            {"label": "Copper & Bronze", "value": "Copper & Bronze"},
+                            {"label": "Silver & Gold", "value": "Silver & Gold"},
+                            {"label": "Platinum+", "value": "Platinum+"}],
+                        multi=False,
+                        value="All",
+                        clearable=False,
+                    )], className='three columns', style={'margin-top': '10'}),
+
+                html.Div([
+                    html.P("Part:"),
+                    dcc.Dropdown(
+                        id="part_select4",
+                        options=[
+                            {"label": "Barrel", "value": "primarybarrel"},
+                            {"label": "Underbarrel", "value": "primaryunderbarrel"},
+                            {"label": "Sight", "value": "primarysight"},
+                            {"label": "Grip", "value": "primarygrip"}],
+                        multi=False,
+                        value="primarybarrel",
+                        clearable=False,
+                    )], className='three columns', style={'margin-top': '10'}),
+
+
+            ], className='row', style={'padding': '20px'}),
+            # end of dropdown
+            dcc.Graph(id='pb_figure')
+
+        ], className='six columns')
+    ], className='row'),
 
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
@@ -426,6 +530,7 @@ def update_graph(platform, gamemode, skillrank):
 
     rdf = pd.merge(adf, ddf, on="mapname")
     rdf["windelta"] = rdf["awinrate"] - rdf["dwinrate"]
+
     rdf = rdf.sort_values('windelta', ascending=[False])
     fig = go.Figure()
 
@@ -455,6 +560,64 @@ def update_graph(platform, gamemode, skillrank):
     fig.update_layout(showlegend=True)
 
     return fig
+
+# ------------------------------------------------------------------------------
+# Connect the Plotly graphs with Dash Components
+# call back of figure #4
+@app.callback(
+
+    Output(component_id='pb_figure', component_property='figure'),
+    [Input(component_id='platform_select4', component_property='value'),
+     Input(component_id='gamemode_select4', component_property='value'),
+     Input(component_id='skillrank_select4', component_property='value'),
+     Input(component_id='part_select4', component_property='value')]
+)
+
+def update_graph(platform, gamemode, skillrank, part):
+    # Apply filters
+    dff = weapondf.copy()
+    if platform != "All":
+        dff = dff[dff["platform"] == platform]
+
+    if skillrank == "Copper & Bronze":
+        dff = dff[(dff["skillrank"] == "Copper") | (dff["skillrank"] == "Bronze")]
+    if skillrank == "Silver & Gold":
+        dff = dff[(dff["skillrank"] == "Silver") | (dff["skillrank"] == "Gold")]
+    if skillrank == "Platinum+":
+        dff = dff[(dff["skillrank"] == "Platinum") | (dff["skillrank"] == "Diamond")]
+
+    if gamemode != "All":
+        dff = dff[dff["gamemode"] == gamemode]
+
+    dff = dff[dff["primarygrip"] != "Spectator"]
+    dff = dff[dff["secondaryunderbarrel"] != "(null)"]
+    dff = dff[dff["primaryweapontype"] != "Shield"]
+
+
+    # calculation
+    adf = dff.groupby("primaryweapontype").sum()[["haswon", "count"]].apply(lambda x:x).reset_index()
+    adf["avrwinrate"] = adf["haswon"] / adf["count"]
+    adf = adf[["primaryweapontype", "avrwinrate"]]
+
+    wdf = dff.groupby(["primaryweapontype", part]).sum()[["haswon", "count"]].apply(lambda x: x).reset_index()
+    wdf = pd.merge(wdf, adf, on="primaryweapontype", how='outer')
+
+    wdf["windelta"] = (wdf["haswon"] / wdf["count"] - wdf["avrwinrate"]) * 100
+
+
+    fig = go.Figure()
+    parts = wdf[part].unique()
+
+    for x in parts:
+
+        fig.add_trace(go.Bar(
+            name=x,
+            x=wdf[wdf[part] == x]["primaryweapontype"],
+            y=wdf[wdf[part] == x]["windelta"],
+        ))
+
+    return fig
+
 
 
 # ------------------------------------------------------------------------------

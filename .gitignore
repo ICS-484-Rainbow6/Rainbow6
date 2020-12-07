@@ -1,5 +1,6 @@
 *.csv
 !result.csv
 !combo.csv
+!result_weapon.csv
 __pycache__/
 .idea/

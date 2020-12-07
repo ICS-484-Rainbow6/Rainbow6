@@ -6,3 +6,4 @@ server = app.server
 
 df = pd.read_csv("result.csv")
 combodf = pd.read_csv("combo.csv")
+weapondf = pd.read_csv("result_weapon.csv")

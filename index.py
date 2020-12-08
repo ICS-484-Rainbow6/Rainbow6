@@ -30,6 +30,20 @@ app.layout = html.Div([
 
     html.Div(id='page-content'),
 
+    html.Div([
+        html.Div([
+            html.P('2020 Rainbow Six Siege Data Visualization'),
+            html.P('Web Created by Team 666'),
+            html.P('Power by Dash, Pandas, Plotly'),
+            html.A([
+                html.Img(src=app.get_asset_url('github.png'), style={'height': '3%', 'width': '3%'})
+            ], href="https://github.com/mybad812/mybad812.github.io")
+        ], className='two column offset-by-five.column',
+            style={'text-align': 'center',
+                   'background': 'rgba(28, 28, 28, 0.95)',
+                   'margin-top': '250px', 'color': 'white', 'padding-top': '30px', 'padding-bottom': '20px'})
+    ], className='row')
+
 ])
 
 

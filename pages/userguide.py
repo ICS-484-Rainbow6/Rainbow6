@@ -18,44 +18,72 @@ layout = html.Div([
         html.P("Select Parameters on several dropdown menu, and results will be automatically displayed.", style={'font-weight': 'bold'}),
         html.Hr(),
 
-    ], className='nine columns', style={'font-size': '150%', 'margin-left': '10%'}),
-
-    html.Div([
-], style={'background': '#8b8471'}),
+    ], style={'font-size': '150%', 'margin-left': '10%', 'margin-right': '10%'}),
 
 
     html.Div([
-        html.Div([
-            html.A([
-                html.Div([
-                    html.P('hahahaha', style={'color': 'black'}),
-                    html.P('hahahaha'),
-                    html.P('hahahaha'),
-                    html.P('hahahaha'),
-                ])
 
-            ], href='#')
-        ], className='hah three columns', style={'margin-left': '5%'}),
         html.Div([
-            html.A([
+            html.Div([
+                html.P('Page 1', style={'background':'#333333', 'color':'white', 'text-align':'center', 'padding-top': '1%', 'padding-bottom': '1%'}),
+            ], className='row', style={'background':'white'}),
+            html.Div([
                 html.Div([
-                    html.P('hahahaha', style={'color': 'black'}),
-                    html.P('hahahaha'),
-                    html.P('hahahaha'),
-                    html.P('hahahaha'),
-                ])
-            ], href='#')
-        ], className='hah three columns'),
+                    html.H3('Overall Rate', style={'font-family': 'sans-serif', 'font-weight': '500'}),
+                    html.P('See the Operator Tier List in the current season and get basic understanding about each operator in the version.'),
+                    html.A('See Details ...', href='/pages/page1', className='button',
+                           style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})
+                ], style={'padding-left': '20px'})
+            ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
+        ], className='two columns offset-by-one', style={'width': '327px', 'margin-right':'10px'}),
         html.Div([
-            html.A([
-                html.Img(src=app.get_asset_url('ug_5.png'), style={'height': '90%', 'width': '90%'})
-            ], href='#')
-        ], className='three columns'),
-        html.Div([
-            html.A([
-                html.Img(src=app.get_asset_url('ug_3.png'), style={'height': '90%', 'width': '90%'})
-            ], href='#')
-        ], className='three columns'),
-    ], className='row', style={'background': '#8b8471'})
+            html.Div([
+                html.P('Page 2', style={'background':'#333333', 'color':'white', 'text-align':'center', 'padding-top': '1%', 'padding-bottom': '1%'}),
+            ], className='row', style={'background':'white'}),
+            html.Div([
+                html.Div([
+                    html.H3('Popular Teams', style={'font-family': 'sans-serif', 'font-weight': '500'}),
+                    html.P('See the most popular team in this season, and find the best team with high win rate for you and your friends.'),
+                    html.A('See Details ...', href='/pages/page2', className='button',
+                           style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
 
+                ], style={'padding-left': '20px'})
+            ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
+        ], className='two columns', style={'width': '327px', 'margin-right':'10px'}),
+        html.Div([
+            html.Div([
+                html.P('Page 3',
+                       style={'background': '#333333', 'color': 'white', 'text-align': 'center', 'padding-top': '1%',
+                              'padding-bottom': '1%'}),
+            ], className='row', style={'background': 'white'}),
+            html.Div([
+                html.Div([
+                    html.H3('Operator Details', style={'font-family': 'sans-serif', 'font-weight': '500'}),
+                    html.P('Explore details deeply for your favorite Operators, and understand their power and weakness.'),
+                    html.A('See Details ...', href='/pages/page3', className='button',
+                           style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
+                ], style={'padding-left': '20px'})
+            ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
+        ], className='two columns', style={'width': '327px', 'margin-right':'10px'}),
+
+
+    ], className='row', style={'background': '#8b8471', 'padding-top': '40px'}),
+
+    html.Div([
+        html.Div([
+            html.Div([
+                html.P('Page 4',
+                       style={'background': '#333333', 'color': 'white', 'text-align': 'center', 'padding-top': '1%',
+                              'padding-bottom': '1%'}),
+            ], className='row', style={'background': 'white'}),
+            html.Div([
+                html.Div([
+                    html.H3('More ...', style={'font-family': 'sans-serif', 'font-weight': '500'}),
+                    html.P('More interesting facts you can find about the game that they have influence to your win rate.'),
+                    html.A('See Details ...', href='/pages/page4', className='button',
+                           style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
+                ], style={'padding-left': '20px'})
+            ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
+        ], className='two columns offset-by-one', style={'width': '327px'})
+    ], className='row', style={'background': '#8b8471', 'padding-top': '20px', 'padding-bottom': '40px'})
 ], style={'background': 'rgba(255, 255, 255, 0.9)'})

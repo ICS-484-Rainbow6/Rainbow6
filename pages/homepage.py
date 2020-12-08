@@ -4,7 +4,7 @@ from dash.dependencies import Input, Output
 
 from app import app
 
-layout = html.Div([
+layout = html.Div([html.Div([
     html.Div([
         html.H2('DATA ', style={'font-family': 'sans-serif', 'line-height': '60%'}),
         html.H2('HELP YOU WIN', style={'font-family': 'sans-serif', 'line-height': '60%', 'padding-bottom': '20px'}),
@@ -19,3 +19,4 @@ layout = html.Div([
     html.A('User Guide', href='/pages/userguide', className='button', style={'margin': '18px', 'color': 'white'})
 ], className='four columns',
     style={'background': 'rgba(43, 43, 43, 0.5)', 'color': 'white', 'margin-top': '200px', 'margin-left': '300px'})
+], className='twelve columns', style={'background': 'rgba(255, 255, 255, 0)'})

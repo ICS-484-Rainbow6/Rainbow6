@@ -36,7 +36,7 @@ Download the code into you local computer.
 *   Go to the folder by using terminal or other IDEAs
 *   Complie the ' index.py ' to run the program
 #### Note:
-If there are some compile errors such as "No module named ... ", 
-All you need to do is intall these missing modules by "pip install NAME_MODULE_MISSED" or 
+If there are some compile errors such as <p>"No module named ... "</p>, 
+All you need to do is intall these missing modules by "<p>pip install NAME_MODULE_MISSED</p>" or 
 "conda install NAME_MODULE_MISSED". 
 Using pip or conda depends on which develop envrionment you are in. 

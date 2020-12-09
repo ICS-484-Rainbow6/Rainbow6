@@ -32,7 +32,7 @@ layout = html.Div([
             html.Div([
                 html.Div([
                     html.H3('Overall Intensity', style={'font-family': 'sans-serif', 'font-weight': '500'}),
-                    html.P('See the Operator Tier List in the current season and get basic understanding about each operator in the version.'),
+                    html.P('See the Operator Tier List in the current season and get basic understanding about each operator in the version.', style={'height': '100px'}),
                     html.A('See Details ...', href='/pages/page1', className='button',
                            style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})
                 ], style={'padding-left': '20px', 'padding-right': '20px'})
@@ -49,7 +49,7 @@ layout = html.Div([
             html.Div([
                 html.Div([
                     html.H3('Popular Teams', style={'font-family': 'sans-serif', 'font-weight': '500'}),
-                    html.P('See the most popular team in this season, and find the best team with high win rate for you and your friends.'),
+                    html.P('See the most popular team in this season, and find the best team with high win rate for you and your friends.', style={'height': '100px'}),
                     html.A('See Details ...', href='/pages/page2', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
 
@@ -69,7 +69,7 @@ layout = html.Div([
             html.Div([
                 html.Div([
                     html.H3('Operator Details', style={'font-family': 'sans-serif', 'font-weight': '500'}),
-                    html.P('Explore details deeply for your favorite Operators, and understand their power and weakness.'),
+                    html.P('Explore details deeply for your favorite Operators, and understand their power and weakness.', style={'height': '100px'}),
                     html.A('See Details ...', href='/pages/page3', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px', 'padding-right': '20px'})
@@ -88,7 +88,7 @@ layout = html.Div([
             html.Div([
                 html.Div([
                     html.H3('More ...', style={'font-family': 'sans-serif', 'font-weight': '500'}),
-                    html.P('More interesting facts you can find about the game that they have influence to your win rate.'),
+                    html.P('More interesting facts you can find about the game that they have influence to your win rate.', style={'height': '100px'}),
                     html.A('See Details ...', href='/pages/page4', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px', 'padding-right': '20px'})

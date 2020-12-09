@@ -22,7 +22,8 @@ layout = html.Div([
 
 
     html.Div([
-
+        html.Div('.', className='two columns'),
+        # page 1
         html.Div([
             html.Div([
                 html.P('Page 1', style={'background':'#333333', 'color':'white', 'text-align':'center', 'padding-top': '1%', 'padding-bottom': '1%'}),
@@ -35,7 +36,10 @@ layout = html.Div([
                            style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='two columns offset-by-one', style={'width': '327px', 'margin-right':'10px'}),
+        ], className='three columns'),
+
+        html.Div('.', className='two columns'),
+        # page 2
         html.Div([
             html.Div([
                 html.P('Page 2', style={'background':'#333333', 'color':'white', 'text-align':'center', 'padding-top': '1%', 'padding-bottom': '1%'}),
@@ -49,7 +53,16 @@ layout = html.Div([
 
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='two columns', style={'width': '327px', 'margin-right':'10px'}),
+        ], className='three columns'),
+        html.Div('`', className='two columns'),
+
+
+    ], className='row', style={'background': '#8b8471', 'padding-top': '40px'}),
+
+    html.Div([
+
+        html.Div('.', className='two columns'),
+        # page 3
         html.Div([
             html.Div([
                 html.P('Page 3',
@@ -64,12 +77,11 @@ layout = html.Div([
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='two columns', style={'width': '327px', 'margin-right':'10px'}),
+        ], className='three columns'),
 
+        html.Div('.', className='two columns'),
 
-    ], className='row', style={'background': '#8b8471', 'padding-top': '40px'}),
-
-    html.Div([
+        # page 4
         html.Div([
             html.Div([
                 html.P('Page 4',
@@ -83,7 +95,10 @@ layout = html.Div([
                     html.A('See Details ...', href='/pages/page4', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px'})
-            ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='two columns offset-by-one', style={'width': '327px'})
+            ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'}),
+        ], className='three columns'),
+
+        html.Div('.', className='two columns'),
+
     ], className='row', style={'background': '#8b8471', 'padding-top': '20px', 'padding-bottom': '40px'})
 ], style={'background': 'rgba(255, 255, 255, 0.9)'})

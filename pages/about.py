@@ -22,10 +22,10 @@ layout = html.Div([
             html.P('Interest: Software Engineering, Video Game Design'),
             html.A([
                 html.Img(src=app.get_asset_url('github.png'), style={'height': '11%', 'width': '11%'})
-            ], href="#"),
+            ], href="https://yuhanj.github.io/", target="_blank"),
             html.A([
                 html.Img(src=app.get_asset_url('linkedin.png'), style={'height': '11%', 'width': '11%', 'margin-left':'10px'})
-            ], href="#")
+            ], href="https://www.linkedin.com/in/yuhanjiang/", target="_blank")
         ], className='six columns', style={})
     ], className='row'),
     ], className='seven columns', style={'background': 'rgba(43, 43, 43, 0.8)', 'padding-top': '20px', 'padding-bottom':'20px'}),
@@ -39,11 +39,11 @@ layout = html.Div([
             html.P('Interest: AI, Machine Learning, Software Engineering'),
             html.A([
                 html.Img(src=app.get_asset_url('github.png'), style={'height': '11%', 'width': '11%'})
-            ], href='https://tianhuizhou.github.io/'),
+            ], href='https://tianhuizhou.github.io/', target="_blank"),
             html.A([
                 html.Img(src=app.get_asset_url('linkedin.png'),
                          style={'height': '11%', 'width': '11%', 'margin-left': '10px'})
-            ], href="#")
+            ], href="https://www.linkedin.com/in/tianhui-zhou-55148619b/", target="_blank")
         ], className='six columns', style={'margin-right': '20px', 'margin-left': '20px'}),
         html.Div([
             html.Img(src=app.get_asset_url('Bobbyy.png'), style={'height': '100%', 'width': '100%'})
@@ -64,7 +64,7 @@ layout = html.Div([
                 html.P('Currently I am UH student working on my second degree major in computer science focus on data science.'),
                 html.A([
                     html.Img(src=app.get_asset_url('github.png'), style={'height': '11%', 'width': '11%'})
-                ], href="https://github.com/mybad812/mybad812.github.io"),
+                ], href="https://mybad812.github.io/", target="_blank"),
                 html.A([
                     html.Img(src=app.get_asset_url('linkedin.png'),
                              style={'height': '11%', 'width': '11%', 'margin-left': '10px'})

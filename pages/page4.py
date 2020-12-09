@@ -253,7 +253,7 @@ layout = html.Div([
             dcc.Graph(id='map_figure')
         ], className='six columns'),
         html.Div([
-            html.H2('Win Rate Difference by Map', style={'fontWeight': 'bold', 'color': 'white'}),
+            html.H2('Win Rate Difference by Map (Attacker minus Defender)', style={'fontWeight': 'bold', 'color': 'white'}),
             html.Div(style={'padding-bottom': '20px'}),
 
             html.H6('Win Rate Difference:', style={'fontWeight': 'bold', 'color': 'white'}),

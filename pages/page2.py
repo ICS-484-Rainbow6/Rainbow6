@@ -111,7 +111,7 @@ layout = html.Div([
                 style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'}
             ),
         ]),
-    ], className='row'),
+    ], className='row', style={'padding-bottom': '20px'}),
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 
 

@@ -163,8 +163,8 @@ layout = html.Div([
             html.P('Dead = (The total Dead when pick WeaponCombo) / (The number of picked times of the WeaponCombo)'),
             html.P('Dead means the average dead times in each round when you pick the WeaponCombo.'),
         ], className="six columns")
-    ], className='row')
-
+    ], className='row'),
+    html.Hr(),
 
 ], className='ten columns offset-by-one', style={'opacity': '0.955'})
 

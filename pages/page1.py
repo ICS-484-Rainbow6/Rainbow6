@@ -115,7 +115,7 @@ layout = html.Div([
               ], className='row', style={'background': '#2b2b2b'}),
 
 
-    html.Div(id='tier_list', className='row', style={'padding-top': '30px'}),
+    html.Div(id='tier_list', className='row', style={'padding-top': '30px', 'padding-bottom': '20px'}),
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})
 

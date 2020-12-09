@@ -380,7 +380,7 @@ layout = html.Div([
             dcc.Graph(id='pb_figure')
 
         ], className='six columns')
-    ], className='row'),
+    ], className='row', style={'padding-bottom': '20px'}),
 
 
 ],  className='ten columns offset-by-one', style={'opacity': '0.955'})

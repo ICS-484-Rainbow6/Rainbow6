@@ -37,7 +37,7 @@ app.layout = html.Div([
             html.P('Power by Dash, Pandas, Plotly'),
             html.A([
                 html.Img(src=app.get_asset_url('github.png'), style={'height': '3%', 'width': '3%'})
-            ], href="https://github.com/ICS-484-Rainbow6/Rainbow6")
+            ], href="https://github.com/ICS-484-Rainbow6/Rainbow6", target="_blank")
         ], className='two column offset-by-five.column',
             style={'text-align': 'center',
                    'background': 'rgba(28, 28, 28, 0.95)',

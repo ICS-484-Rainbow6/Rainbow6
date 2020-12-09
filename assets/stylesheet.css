@@ -68,6 +68,9 @@
 
   .one-half.column                { width: 48%; }
 
+  .about.column                   { width: 22%; }
+  .about.gap.column               { width: 1.6%; padding-top: 1px }
+
   /* Offsets */
   .offset-by-one.column,
   .offset-by-one.columns          { margin-left: 8.66666666667%; }

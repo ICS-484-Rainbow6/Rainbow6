@@ -20,9 +20,10 @@ layout = html.Div([
 
     ], style={'font-size': '150%', 'margin-left': '10%', 'margin-right': '10%'}),
 
-
     html.Div([
-        html.Div('.', className='two columns'),
+
+        html.Div('', className='about gap column'),
+
         # page 1
         html.Div([
             html.Div([
@@ -36,9 +37,10 @@ layout = html.Div([
                            style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='three columns'),
+        ], className='about column'),
 
-        html.Div('.', className='two columns'),
+        html.Div('', className='about gap column'),
+
         # page 2
         html.Div([
             html.Div([
@@ -53,15 +55,10 @@ layout = html.Div([
 
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='three columns'),
-        html.Div('`', className='two columns'),
+        ], className='about column'),
 
+        html.Div('', className='about gap column'),
 
-    ], className='row', style={'background': '#8b8471', 'padding-top': '40px'}),
-
-    html.Div([
-
-        html.Div('.', className='two columns'),
         # page 3
         html.Div([
             html.Div([
@@ -77,9 +74,9 @@ layout = html.Div([
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
-        ], className='three columns'),
+        ], className='about column'),
 
-        html.Div('.', className='two columns'),
+        html.Div('', className='about gap column'),
 
         # page 4
         html.Div([
@@ -96,9 +93,9 @@ layout = html.Div([
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
                 ], style={'padding-left': '20px'})
             ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'}),
-        ], className='three columns'),
+        ], className='about column'),
 
-        html.Div('.', className='two columns'),
+        html.Div('', className='about gap column'),
 
     ], className='row', style={'background': '#8b8471', 'padding-top': '20px', 'padding-bottom': '40px'})
 ], style={'background': 'rgba(255, 255, 255, 0.9)'})

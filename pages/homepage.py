@@ -13,7 +13,7 @@ layout = html.Div([html.Div([
         html.P('Using our amazing tools to help you find appropriate Operators and Weapon combos.'),
         html.P('If you are already a master,', style={'font-weight': 'bold', 'font-size': 'large', 'padding-top':'15px'}),
         html.P('Let explore more details about the game by using our tools,'),
-        html.P('and find more interesting ideas to punish your opponent in each game.'),
+        html.P('and find more interesting ideas to punish your opponents in each game.'),
 
     ], style={'padding': '25px'}),
     html.A('User Guide', href='/pages/userguide', className='button', style={'margin': '18px', 'color': 'white'})

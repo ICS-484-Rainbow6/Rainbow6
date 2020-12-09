@@ -17,10 +17,10 @@ app.layout = html.Div([
             ),
             html.Ul([
                 html.Li([
-                    html.A('Page1', href='/pages/page1'),
-                    html.A('Page2', href='/pages/page2'),
-                    html.A('Page3', href='/pages/page3'),
-                    html.A('Page4', href='/pages/page4'),
+                    html.A('Overall', href='/pages/page1'),
+                    html.A('Team', href='/pages/page2'),
+                    html.A('Operator', href='/pages/page3'),
+                    html.A('More', href='/pages/page4'),
                     html.A('About', href='/pages/about')
                 ])
             ])

@@ -29,7 +29,7 @@ layout = html.Div([
             ], className='row', style={'background':'white'}),
             html.Div([
                 html.Div([
-                    html.H3('Overall Rate', style={'font-family': 'sans-serif', 'font-weight': '500'}),
+                    html.H3('Overall Intensity', style={'font-family': 'sans-serif', 'font-weight': '500'}),
                     html.P('See the Operator Tier List in the current season and get basic understanding about each operator in the version.'),
                     html.A('See Details ...', href='/pages/page1', className='button',
                            style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})

@@ -16,9 +16,10 @@ layout = html.Div([
 
         ], className='four columns', style={'margin-right': '20px', 'margin-left': '20px'}),
         html.Div([
-            html.H3('Captain Dandy !', style={'font-family': 'sans-serif', 'line-height': '60%'}),
-            html.P('I am a very long very long very very very long sentence'),
-            html.P('Please put you personal information at here here here here...'),
+            html.H3('Yuhan (Dandy) Jiang', style={'font-family': 'sans-serif', 'line-height': '60%'}),
+            html.P('Web Design & Development, Data Analysis'),
+            html.P('Dandy is a senior student on Computer Science at UH-Manoa.'),
+            html.P('Interest: Software Engineering, Video Game Design'),
             html.A([
                 html.Img(src=app.get_asset_url('github.png'), style={'height': '11%', 'width': '11%'})
             ], href="#"),
@@ -32,9 +33,10 @@ layout = html.Div([
     html.Div([
     html.Div([
         html.Div([
-            html.H3('Tianhui Zhou', style={'font-family': 'sans-serif', 'line-height': '60%'}),
-            html.P('I am a very long very long very very very long sentence'),
-            html.P('Please put you personal information at here here here here...'),
+            html.H3('Tianhui (Bobby) Zhou', style={'font-family': 'sans-serif', 'line-height': '60%'}),
+            html.P('Web Design & Development, Data Analysis'),
+            html.P('Bobby is a senior student on Computer Science at UH-Manoa.'),
+            html.P('Interest: AI, Machine Learning, Software Engineering'),
             html.A([
                 html.Img(src=app.get_asset_url('github.png'), style={'height': '11%', 'width': '11%'})
             ], href='https://tianhuizhou.github.io/'),

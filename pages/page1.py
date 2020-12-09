@@ -25,7 +25,7 @@ from app import df
 layout = html.Div([
 
     html.Div([
-        html.H1("Win Delta Per Operator VS Presence", style={'font-family': 'Helvetica',
+        html.H1("Overall Intensity in the season", style={'font-family': 'Helvetica',
                                                              "margin-top": "25",
                                                              "margin-bottom": "0"}, className='eight columns'),
     ], className='row'),

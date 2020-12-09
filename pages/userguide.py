@@ -35,7 +35,7 @@ layout = html.Div([
                     html.P('See the Operator Tier List in the current season and get basic understanding about each operator in the version.'),
                     html.A('See Details ...', href='/pages/page1', className='button',
                            style={'margin': '18px', 'color': 'white', 'background':'#4462a8'})
-                ], style={'padding-left': '20px'})
+                ], style={'padding-left': '20px', 'padding-right': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
         ], className='about column'),
 
@@ -53,7 +53,7 @@ layout = html.Div([
                     html.A('See Details ...', href='/pages/page2', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
 
-                ], style={'padding-left': '20px'})
+                ], style={'padding-left': '20px', 'padding-right': '20px'})
             ], className='row', style={'background':'#ffffff', 'color': 'black', 'padding-top': '1px'})
         ], className='about column'),
 
@@ -72,7 +72,7 @@ layout = html.Div([
                     html.P('Explore details deeply for your favorite Operators, and understand their power and weakness.'),
                     html.A('See Details ...', href='/pages/page3', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
-                ], style={'padding-left': '20px'})
+                ], style={'padding-left': '20px', 'padding-right': '20px'})
             ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'})
         ], className='about column'),
 
@@ -91,7 +91,7 @@ layout = html.Div([
                     html.P('More interesting facts you can find about the game that they have influence to your win rate.'),
                     html.A('See Details ...', href='/pages/page4', className='button',
                            style={'margin': '18px', 'color': 'white', 'background': '#4462a8'})
-                ], style={'padding-left': '20px'})
+                ], style={'padding-left': '20px', 'padding-right': '20px'})
             ], className='row', style={'background': '#ffffff', 'color': 'black', 'padding-top': '1px'}),
         ], className='about column'),
 

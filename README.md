@@ -35,6 +35,11 @@ Download the code into you local computer.
 ### Step 2:
 *   Go to the folder by using terminal or other IDEAs
 *   Complie the ' index.py ' to run the program
+
+### Step 3:
+*   See the web app on your localhost server. (It will be display on your terminal after you complie the program.)
+
+*   Complie the ' index.py ' to run the program
 #### Note:
 If there are some compile errors such as ``` "No module named ... " ```, 
 All you need to do is intall these missing modules by ``` pip install NAME_MODULE_MISSED ``` or 
